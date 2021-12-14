@@ -1,0 +1,11 @@
+@font-face {
+	font-family: 'LCD2U';
+	src: url('./LCD2U.eot');
+	src: local('LCD2U'), url('./LCD2U.woff') format('woff'), url('./LCD2U.ttf') format('truetype');
+}
+/* use this class to attach this font to any element i.e. <p class="fontsforweb_fontid_525">Text with this font applied</p> */
+.fontsforweb_fontid_525 {
+	font-family: 'LCD2U' !important;
+}
+
+/* Font downloaded from FontsForWeb.com */

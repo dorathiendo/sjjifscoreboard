@@ -1,0 +1,317 @@
+<html>
+<head>
+    <title>SJJIF Timer Green-White</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <script src="../jquery-2.1.1.min.js"></script>
+    <script src="../jquery.browser.min.js"></script>
+    <script src="../jquery.alerts.js"></script>
+    <script src="../jquery-ui.js"></script>
+    <script src="../jquery.cookie.js"></script>
+    <script src="../sv_widget.js"></script>
+
+    <link href="../jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <link href="../jquery.alerts.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="font.css">
+
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        html {
+        }
+
+        body {
+            margin: 0 auto;
+            vertical-align: middle;
+            position: relative;
+        }
+
+        table#Clockface {
+            margin: 0 auto;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .floatingRectangle {
+            position: relative;
+            font-family: 'Arial Black', sans-serif;
+            font-size: 30px;
+            letter-spacing: 10px;
+            background-color: rgba(0, 0, 0, 0);
+            color: yellow;
+            padding: 0;
+            text-align: center;
+        }
+
+        div.flag_image {
+            -webkit-transform: rotate(90deg); /* Safari and Chrome */
+            -moz-transform: rotate(90deg); /* Firefox */
+            -ms-transform: rotate(90deg); /* IE 9 */
+            -o-transform: rotate(90deg); /* Opera */
+            transform: rotate(90deg);
+        }
+
+        .competitor1_font {
+            white-space: nowrap;
+            margin-top: 40px;
+            text-align: center;
+            color: #ffff01;
+            font-size: 60px;
+            font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', 'Arial Black', sans-serif;
+            margin-bottom: 40px;
+        }
+
+        .competitor2_font {
+            white-space: nowrap;
+            margin-top: 40px;
+            text-align: center;
+            color: #1b1464;
+            font-size: 60px;
+            font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', 'Arial Black', sans-serif;
+            margin-bottom: 40px;
+        }
+
+        .competitor1_country_font {
+            white-space: nowrap;
+            margin-top: 40px;
+            text-align: center;
+            color: #ffff01;
+            font-size: 24px;
+            font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', 'Arial Black', sans-serif
+        }
+
+        .competitor2_country_font {
+            white-space: nowrap;
+            margin-top: 40px;
+            text-align: center;
+            color: #1b1464;
+            font-size: 24px;
+            font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', 'Arial Black', sans-serif
+        }
+
+        #overtime_section {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .overtime_box_wrapper {
+            visibility: hidden;
+            display: flex;
+            justify-content: center;
+        }
+
+        .overtime_box {
+            height: 130px;
+            width: 25.33333%;
+            background: white;
+            outline: 16px solid black;
+            margin: 25px;
+            text-align: center;
+        }
+
+        .overtime_box .label {
+            font-family: Impact;
+            font-weight: bold;
+            font-size: 5em;
+        }
+
+        .overtime_box .time {
+            font-family: Impact;
+            letter-spacing: 2px;
+            font-size: 1.5em;
+        }
+
+        .overtime_box.finals {
+            display: none;
+        }
+
+        .sv_overtime_button {
+            margin: 10px 0;
+            height: 50px;
+            width: 100%;
+            border: none;
+            font-weight: bold;
+        }
+
+        .circles {
+            display: block;
+            width: 60px;
+            height: 60px;
+            margin: 10px 40px;
+            visibility: hidden;
+        }
+
+        .winner-label {
+            position: fixed;
+            top: 30%;
+            z-index: 1;
+            font-size: 9em;
+            transform: rotate(-35deg);
+            color: yellow;
+            font-family: sans-serif;
+            font-weight: bold;
+            letter-spacing: .1em;
+            display: none;
+        }
+
+        .finals-label {
+            font-family: sans-serif;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            display: none;
+        }
+    </style>
+</head>
+
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<!-- Save for Web Slices (nabjjf-timer-tablet.psd) -->
+<div class="background" style="background-color: green; width: calc(50% + 1px); height: 117%; position: absolute; top: 0; left: 0; z-index: -1; min-width: 627px;"></div>
+<table id="Clockface" height="751" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <td colspan="6" style="background-color: green; position:relative;">
+            <div style="width: 500px;">
+                <div id="sv_reg1" class="competitor1_font">COMPETITOR 2</div>
+            </div>
+            <h1 class="winner-label player1-winner">WINNER</h1>
+        </td>
+        <td colspan="6" style="position: relative;">
+            <div style="width: 500px;">
+                <div id="sv_reg2" class="competitor2_font">COMPETITOR 1</div>
+            </div>
+            <h1 class="winner-label player2-winner">WINNER</h1>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="background-color: green;">
+            <div class="flag_image">
+                <img id="competitor1_flag_img" src="../images/flags/_0010_usa.jpg" width="232px"
+                     style="border: 3px solid #000000;">
+            </div>
+        </td>
+        <td colspan="8" bgcolor="000000">
+            <div style="width: 717px; height: 232px; display: table-cell; vertical-align: middle;">
+                <div id="tie_break" class="floatingRectangle">TIE BREAK</div>
+                <div id="sv_timer"
+                     style="text-align: center; color: #fe0000; font-size: 220px; font-family: 'LCD2U', monospace">00:00
+                </div>
+            </div>
+        </td>
+        <td colspan="2">
+            <div class="flag_image">
+                <img id="competitor2_flag_img" src="../images/flags/_0010_usa.jpg" width="232px"
+                     style="border: 3px solid #000000;">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td style="display:none;" align="center" id="competitor1_flag_name" class="competitor1_country_font">United
+            States (USA)
+        </td>
+        <td colspan="8"></td>
+        <td style="display:none;" align="center" id="competitor2_flag_name" class="competitor2_country_font">United
+            States (USA)
+        </td>
+        <td></td>
+    <tr>
+    <tr>
+        <td colspan="6" style="background-color: green;"><img src="spacer.gif" width="500" height="33" alt=""></td>
+        <td colspan="6"><img src="spacer.gif" width="358" height="33" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="1" style="background-color: green;">
+            <img src="left-circles-yellow.png" class="circles">
+            <img src="left-circles-orange.png" class="circles">
+            <img src="left-circles-red.png" class="circles">
+        </td>
+        <td colspan="2" bgcolor="000000">
+            <div style="width: 200px; height: 161px; display: table-cell; vertical-align: middle;">
+                <div id="sv_minus1"
+                     style="text-align: center; color: #fe0000; font-size: 120px; font-family: 'LCD2U', monospace">-2
+                </div>
+            </div>
+        </td>
+        <td colspan="6" style="position:relative;">
+            <img src="logo.png" width="303" height="180" alt="logo" style="margin: 0 auto;display: block;">
+            <div class="background" style="background-color: green; width: calc(50% + 1px); height: 100%; position: absolute; top: 0; left: 0; z-index: -1"></div>
+        </td>
+        <td colspan="2" bgcolor="000000">
+            <div style="width: 200px; height: 161px; display: table-cell; vertical-align: middle;">
+                <div id="sv_minus2"
+                     style="text-align: center; color: #fe0000; font-size: 120px; font-family: 'LCD2U', monospace">-1
+                </div>
+            </div>
+        </td>
+        <td colspan="1">
+            <img src="right-circles-yellow.png" class="circles">
+            <img src="right-circles-orange.png" class="circles">
+            <img src="right-circles-red.png" class="circles">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="6" style="background: green;"><img src="spacer.gif" width="177" height="29" alt=""></td>
+        <td colspan="6"><img src="spacer.gif" width="179" height="29" alt=""></td>
+    </tr>
+    <tr>
+        <td colspan="12">
+            <h1 class="finals-label">Finals</h1>
+        </td>
+    </tr>
+    <tr id="overtime_section">
+        <td colspan="6" style="background: green;">
+            <div class="overtime_box_wrapper">
+                <div class="overtime_box current_round" round="1" player="player1">
+                    <span class="label"></span>
+                    <span class="time"></span>
+                </div>
+                <div class="overtime_box finals" round="2" player="player1">
+                    <span class="label"></span>
+                    <span class="time"></span>
+                </div>
+                <div class="overtime_box finals" round="3" player="player1">
+                    <span class="label"></span>
+                    <span class="time"></span>
+                </div>
+            </div>
+        </td>
+        <td colspan="6">
+            <div class="overtime_box_wrapper">
+                <div class="overtime_box current_round" round="1" player="player2">
+                    <span class="label"></span>
+                    <span class="time"></span>
+                </div>
+                <div class="overtime_box finals" round="2" player="player2">
+                    <span class="label"></span>
+                    <span class="time"></span>
+                </div>
+                <div class="overtime_box finals" round="3" player="player2">
+                    <span class="label"></span>
+                    <span class="time"></span>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="background: green;"><img src="spacer.gif" width="13" height="0" alt=""></td>
+        <td style="background: green;"><img src="spacer.gif" width="128" height="0" alt=""></td>
+        <td style="background: green;"><img src="spacer.gif" width="36" height="0" alt=""></td>
+        <td style="background: green;"><img src="spacer.gif" width="172" height="0" alt=""></td>
+        <td style="background: green;"><img src="spacer.gif" width="110" height="0" alt=""></td>
+        <td style="background: green;"><img src="spacer.gif" width="41" height="0" alt=""></td>
+        <td><img src="spacer.gif" width="40" alt="" height="0"></td>
+        <td><img src="spacer.gif" width="112" alt="" height="0"></td>
+        <td><img src="spacer.gif" width="169" alt="" height="0"></td>
+        <td><img src="spacer.gif" width="37" alt="" height="0"></td>
+        <td><img src="spacer.gif" width="127" alt="" height="0"></td>
+        <td><img src="spacer.gif" width="15" alt="" height="0"></td>
+    </tr>
+</table>
+<!-- End Save for Web Slices -->
+
+</body>
+</html>
+

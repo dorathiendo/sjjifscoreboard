@@ -1,0 +1,151 @@
+<html>
+<head>
+<title>SJJIF Timer White-Green</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<script src="../jquery-2.1.1.min.js"></script>
+<script src="../jquery.browser.min.js"></script>
+<script src="../jquery.alerts.js"></script>
+<script src="../jquery-ui.js"></script>
+<script src="../jquery.cookie.js"></script>
+<script src="../sv_widget.js"></script>
+
+<link href="../jquery-ui.css" rel="stylesheet" type="text/css"/>
+<link href="../jquery.alerts.css" rel="stylesheet" type="text/css" media="screen" />
+<link rel="stylesheet" href="font.css">
+
+
+<style>
+html, body {
+	height: 100%;
+}
+
+html {
+	display: table;
+	margin: auto;
+}
+
+body {
+	display: table-cell;
+	vertical-align: middle;
+	background-image: url('clockface-bg-wg.jpg');
+	background-repeat: repeat-y;
+	background-position: center center;
+  position: relative;
+}
+
+.floatingRectangle {
+    z-index: 1;
+    position: relative;
+    top: 131px, 
+    left: 400px;
+	font-family: 'Arial Black', sans-serif;
+    font-size: 30px;
+	letter-spacing: 10px;
+    background-color: rgba(0, 0, 0, 0);
+    color: yellow;
+    padding: 0;
+	text-align:center;
+}
+
+</style>
+
+<script>
+
+</script>
+</head>
+
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+  <!-- Save for Web Slices (nabjjf-timer-tablet.psd) -->
+  <table id="Clockface" width="1000" height="751" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td colspan="6">
+        <div style="width: 500px; height: 91px;">
+          <div id="sv_reg1" style="white-space: nowrap; margin-top: 40px; text-align: center; color: #1b1464; font-size: 60px; font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', 'Arial Black', sans-serif">COMPETITOR 2</div>
+        </div>
+      </td>
+      <td colspan="6">
+        <div style="width: 500px; height: 91px;">
+          <div id="sv_reg2" style="white-space: nowrap; margin-top: 40px; text-align: center; color: #ffff01; font-size: 60px; font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', 'Arial Black', sans-serif">COMPETITOR 1</div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2"><img src="left-circles-yellow.png" style="display:none; width: 141; height=232">
+      																 <img src="left-circles-orange.png" style="display:none; width: 141; height=232">
+      																 <img src="left-circles-red.png" style="display:none; width: 141; height=232"></td>
+      <td colspan="8" bgcolor="000000">
+        <div style="width: 717px; height: 232px; display: table-cell; vertical-align: middle;">
+<div id="tie_break" class="floatingRectangle">TIE BREAK</div>
+          <div id="sv_timer" style="text-align: center; color: #fe0000; font-size: 220px; font-family: 'LCD2U', monospace">00:00</div>
+        </div>
+      </td>
+      <td colspan="2" rowspan="2"><img src="right-circles-yellow.png" style="display:none; width: 141; height=232">
+      														<img src="right-circles-orange.png" style="display:none; width: 141; height=232">
+      														<img src="right-circles-red.png" style="display:none; width: 141; height=232"></td>
+    </tr>
+    <tr>
+      <td colspan="6" ><img src="spacer.gif" width="500" height="33" alt=""></td>
+      <td colspan="4"><img src="spacer.gif" width="358" height="33" alt=""></td>
+    </tr>
+    <tr>
+      <td ><img src="spacer.gif" width="13" height="161" alt=""></td>
+      <td colspan="2" bgcolor="000000">
+        <div style="width: 164; height: 161px; display: table-cell; vertical-align: middle;">
+          <div id="sv_minus1" style="text-align: center; color: #fe0000; font-size: 120px; font-family: 'LCD2U', monospace">-2</div>
+        </div>
+      </td>
+      <td rowspan="2" ><img src="spacer.gif" width="172" height="190" alt=""></td>
+      <td colspan="4" rowspan="2"><img src="logo.png" width="303" height="190" alt=""></td>
+      <td rowspan="2"><img src="spacer.gif" width="169" height="190" alt=""></td>
+      <td colspan="2" bgcolor="000000">
+        <div style="width: 164; height: 161px; display: table-cell; vertical-align: middle;">
+          <div id="sv_minus2" style="text-align: center; color: #fe0000; font-size: 120px; font-family: 'LCD2U', monospace">-1</div>
+        </div>
+      </td>
+      <td><img src="spacer.gif" width="15" height="161" alt=""></td>
+    </tr>
+    <tr>
+      <td colspan="3" ><img src="spacer.gif" width="177" height="29" alt=""></td>
+      <td colspan="3"><img src="spacer.gif" width="179" height="29" alt=""></td>
+    </tr>
+    <tr>
+      <td colspan="2"><img src="spacer.gif" width="141" height="186" alt=""></td>
+      <td colspan="3" bgcolor="000000">
+        <div style="width: 318; height: 186px; display: table-cell; vertical-align: middle; text-align: center;">
+          <div id="sv_score1" style="text-align: center; color: #00ff01; font-size: 170px; font-family: 'LCD2U', monospace">00</div>
+        </div>
+      </td>
+      <td><img src="spacer.gif" width="41" height="186" alt=""></td>
+      <td><img src="spacer.gif" width="40" height="186" alt=""></td>
+      <td colspan="3" bgcolor="000000">
+        <div style="width: 318; height: 186px; display: table-cell; vertical-align: middle; text-align: center;">
+          <div id="sv_score2" style="text-align: center; color: #00ff01; font-size: 170px; font-family: 'LCD2U', monospace">00</div>
+        </div>
+      </td>
+      <td colspan="2"><img src="spacer.gif" width="142" height="186" alt=""></td>
+    </tr>
+    <tr>
+      <td colspan="6"><img src="spacer.gif" width="500" height="18" alt=""></td>
+      <td colspan="6"><img src="spacer.gif" width="500" height="18" alt=""></td>
+    </tr>
+    <tr>
+      <td><img src="spacer.gif" width="13" height="1" alt=""></td>
+      <td><img src="spacer.gif" width="128" height="1" alt=""></td>
+      <td><img src="spacer.gif" width="36" height="1" alt=""></td>
+      <td><img src="spacer.gif" width="172" height="1" alt=""></td>
+      <td><img src="spacer.gif" width="110" height="1" alt=""></td>
+      <td><img src="spacer.gif" width="41" height="1" alt=""></td>
+      <td><img src="spacer.gif" width="40" height="1" alt=""></td>
+      <td><img src="spacer.gif" width="112" height="1" alt=""></td>
+      <td><img src="spacer.gif" width="169" height="1" alt=""></td>
+      <td><img src="spacer.gif" width="37" height="1" alt=""></td>
+      <td><img src="spacer.gif" width="127" height="1" alt=""></td>
+      <td><img src="spacer.gif" width="15" height="1" alt=""></td>
+    </tr>
+  </table>
+  <!-- End Save for Web Slices -->
+  
+</body>
+</html>
+
