@@ -465,12 +465,10 @@ function enterRegs() {
 
                     var isFinals = jQuery('#sv_finals:checked');
                     if (isFinals && isFinals.length > 0) {
-                        // jQuery('.overtime_box.finals').show();
-                        jQuery('.finals-label').show();
+                        // jQuery('.finals-label').show();
                         jQuery('#overtime_section').addClass('is-finals');
                     } else {
-                        // jQuery('.overtime_box.finals').hide();
-                        jQuery('.finals-label').hide();
+                        // jQuery('.finals-label').hide();
                         jQuery('#overtime_section').removeClass('is-finals');
                     }
 
