@@ -527,7 +527,7 @@ function enterOvertimeScores(e) {
         var isUnlimitedTime = player1.hasClass('unlimited_time');
 
         if (isUnlimitedTime || (player1.hasClass('filled') && player2.hasClass('filled'))) {
-            setRoundWinner(currentRound, player1, player2);
+            setRoundWinner(currentRound, player1, player2, isUnlimitedTime);
             getOverallWinner();
 
             //show next round if finals and winner not declared
@@ -569,8 +569,8 @@ function enterOvertimeScores(e) {
         }
     }
 
-    function setRoundWinner(currentRound, player1, player2) {
-        var currentRoundWinner = getRoundWinner(currentRound);
+    function setRoundWinner(currentRound, player1, player2, isUnlimitedTime) {
+        var currentRoundWinner = getRoundWinner(currentRound, isUnlimitedTime);
         overtimeScores[`round${currentRound}`].winner = currentRoundWinner;
         if(currentRoundWinner === 'player1') {
             player1.css('outline-color', 'lightgreen');
@@ -584,9 +584,19 @@ function enterOvertimeScores(e) {
         }
     }
 
-    function getRoundWinner(round) {
+    function getRoundWinner(round, isUnlimitedTime) {
         var player1 = overtimeScores[`round${round}`].player1;
         var player2 = overtimeScores[`round${round}`].player2;
+
+        if (isUnlimitedTime) {
+            if (player1.type === 'SUB' || player1.type === 'SCP') {
+                return 'player1';
+            }
+            if (player2.type === 'SUB' || player2.type === 'SCP'){
+                return 'player2';
+            }
+        }
+
         if (player1.type === 'SUB') {
             if (player2.type === 'SCP' || player2.type === 'TAP') {
                 return 'player1';
