@@ -128,6 +128,22 @@
             display: none;
         }
 
+        #overtime_section.is-finals .overtime_box.finals {
+            display: block;
+        }
+
+        .overtime_box.current_round {
+            outline-color: yellow;
+        }
+
+        .overtime_box.winner {
+            outline-color: lightgreen;
+        }
+
+        .overtime_box.loser {
+            outline-color: red;
+        }
+
         .sv_overtime_button {
             margin: 10px 0;
             height: 50px;
@@ -264,7 +280,7 @@
     <tr id="overtime_section">
         <td colspan="6" style="background: green;">
             <div class="overtime_box_wrapper">
-                <div class="overtime_box current_round" round="1" player="player1">
+                <div class="overtime_box" round="1" player="player1">
                     <span class="label"></span>
                     <span class="time"></span>
                 </div>
@@ -280,7 +296,7 @@
         </td>
         <td colspan="6">
             <div class="overtime_box_wrapper">
-                <div class="overtime_box current_round" round="1" player="player2">
+                <div class="overtime_box" round="1" player="player2">
                     <span class="label"></span>
                     <span class="time"></span>
                 </div>

@@ -76,6 +76,7 @@ class SVTimer {
     isOvertime = false;
     hasTimerStarted = false;
     overtimeLimit = 120000;
+    isUnlimitedTime = false;
 
     constructor() {
         this.hasTimerStarted = false;
@@ -84,21 +85,50 @@ class SVTimer {
         this.hasTimerStarted = true;
         var that = this;
         this.timer = setInterval(function () {
-            if (!that.isOvertime) {
+            if (that.isUnlimitedTime) {
+                that.time = that.time + 10;
+                that.setTime(that.time);
+            } else if (that.isOvertime) {
+                if (that.time === 0) {
+                    const currentPlayer = $('.overtime_box.current_round');
+                    const round = $(currentPlayer).attr('round');
+                    $(currentPlayer).find('.label').text('X');
+                    var nextPlayer = $(`.overtime_box[round="${round}"]:not(.current_round)`);
+
+                    if ($(nextPlayer).find('.label').text() !== 'X') {
+                        that.resetTimer(true)
+                    } else {
+                        that.isUnlimitedTime = true;
+                        that.resetTimer(false);
+                    }
+                    that.moveToNextPlayer();
+
+                    endBell.play();
+
+                } else {
+                    if (that.time === 10000) {
+                        tenSecBell.play();
+                    } else if (that.time === 30000) {
+                        thirtySecBell.play();
+                    }
+                    that.time = that.time - 10;
+                    that.setTime(that.time);
+                }
+            } else {
                 if (that.time === 0) {
                     endBell.play();
                     that.resetTimer(false);
-                    if (jQuery('#sv_minus1').html() === jQuery('#sv_minus2').html()) {
+                    if ($('#sv_minus1').html() === $('#sv_minus2').html()) {
                         that.startOvertime();
                     } else {
-                        var player1Score = parseInt(jQuery('#sv_minus1').html());
-                        var player2Score = parseInt(jQuery('#sv_minus2').html());
+                        var player1Score = parseInt($('#sv_minus1').html());
+                        var player2Score = parseInt($('#sv_minus2').html());
                         if (player1Score > player2Score) {
-                            jQuery('.player1-winner').show();
-                            jQuery('.player2-winner').hide();
+                            $('.player1-winner').show();
+                            $('.player2-winner').hide();
                         } else {
-                            jQuery('.player2-winner').show();
-                            jQuery('.player1-winner').hide();
+                            $('.player2-winner').show();
+                            $('.player1-winner').hide();
                         }
                     }
                     that.hasTimerStarted = false;
@@ -106,39 +136,43 @@ class SVTimer {
                     that.time = that.time - 10;
                     that.setTime(that.time);
                 }
-            } else {
-                if (that.time === that.overtimeLimit) {
-                    // if no winner of the round, continue timer
-                    jQuery('.overtime_box.current_round').addClass('unlimited_time');
-                    var currentRound = jQuery('.overtime_box.current_round')[0].getAttribute('round');
-                    if (currentRound) {
-                        if (overtimeScores[`round${currentRound}`].player1.type === '' && overtimeScores[`round${currentRound}`].player2.type === '') {
-                            that.time = that.time + 10;
-                            that.setTime(that.time);
-                        } else {
-                            endBell.play();
-                            that.resetTimer(true);
-                        }
-                    }
-                } else {
-                    if (that.time === that.get10SecsWarning()) {
-                        tenSecBell.play();
-                    } else if (that.time === that.get30SecsWarning()) {
-                        thirtySecBell.play();
-                    }
-                    that.time = that.time + 10;
-                    that.setTime(that.time);
-                }
             }
         }, 10);
+    }
+    moveToNextPlayer() {
+        var currentPlayer = $('.overtime_box.current_round');
+        var currentRound = currentPlayer.attr('round');
+        var nextPlayer = $(`.overtime_box[round="${currentRound}"]:not(.current_round)`);
+
+        nextPlayer.addClass('current_round');
+        currentPlayer.removeClass('current_round');
+        currentPlayer.removeClass('started');
+
+        if (this.isUnlimitedTime) {
+            if (nextPlayer.find('.label').text() === 'X') {
+                nextPlayer.find('.label').text('');
+                this.resetTimer(false);
+            } else {
+                this.isUnlimitedTime = false;
+                this.resetTimer(true);
+            }
+        } else {
+            this.resetTimer(true);
+        }
     }
     resetTimer(isOvertime) {
         clearInterval(this.timer);
         this.timer = null;
-        this.time = 0;
         this.hasTimerStarted = false;
-        this.isOvertime = isOvertime;
-        this.setTime(0);
+        if (isOvertime) {
+            this.isOvertime = isOvertime;
+            this.setTimer(this.overtimeLimit);
+            this.time = this.overtimeLimit;
+            this.setTime(this.overtimeLimit);
+        } else {
+            this.setTimer(0);
+            this.setTime(0);
+        }
     }
     pauseTimer() {
         clearInterval(this.timer);
@@ -150,20 +184,23 @@ class SVTimer {
         this.setTime(this.time);
     }
     setTime(milliseconds) {
-        jQuery('#sv_timer').css('color', !this.isOvertime ? '#fe0000' : 'yellow');
-        jQuery('#sv_timer').html(millisecondsToTime(milliseconds));
+        $('#sv_timer').css('color', !this.isOvertime ? '#fe0000' : 'yellow');
+        $('#sv_timer').html(millisecondsToTime(milliseconds));
     }
     startOvertime() {
         $('#tie_break').show();
         this.isOvertime = true;
-        jQuery('#sv_timer').css('color', 'yellow');
-        jQuery('#overtime_section .overtime_box_wrapper').css('visibility', 'visible');
+        this.setTimer(this.overtimeLimit);
+        $('#sv_timer').css('color', 'yellow');
+        $('#overtime_section .overtime_box_wrapper').css('visibility', 'visible');
     }
-    get30SecsWarning() {
-        return this.overtimeLimit - 30000;
+    setTimer(time) {
+        this.time = time;
     }
-    get10SecsWarning() {
-        return this.overtimeLimit - 10000;
+    resetFlags() {
+        this.isOvertime = false;
+        this.hasTimerStarted = false;
+        this.isUnlimitedTime = false;
     }
 }
 
@@ -184,21 +221,21 @@ function init(data) {
 
     setNextEvent(data);
 
-    jQuery('#sv_timer').html(svTimerInit);
-    jQuery('#sv_score1').html('00');
-    jQuery('#sv_score2').html('00');
-    jQuery('#sv_minus1').html('0');
-    jQuery('#sv_minus2').html('0');
+    $('#sv_timer').html(svTimerInit);
+    $('#sv_score1').html('00');
+    $('#sv_score2').html('00');
+    $('#sv_minus1').html('0');
+    $('#sv_minus2').html('0');
 
-    jQuery('#sv_reg1').click(enterRegs);
-    jQuery('#sv_reg2').click(enterRegs);
-    jQuery('#sv_timer').dblclick(function (ev) {
+    $('#sv_reg1').click(enterRegs);
+    $('#sv_reg2').click(enterRegs);
+    $('#sv_timer').dblclick(function (ev) {
         svTimer.addTime(10000);
     });
-    jQuery('#sv_timer').click(function () {
+    $('#sv_timer').click(function () {
         toggleTimer();
     });
-    // jQuery('#sv_timer').mousedown(function (ev) {
+    // $('#sv_timer').mousedown(function (ev) {
     //     if (ev.which === 3) {
     //         svTimer.addTime(-1);
     //     } else {
@@ -206,28 +243,28 @@ function init(data) {
     //     }
     // });
 
-    jQuery('#sv_score1').mousedown(function (ev) {
+    $('#sv_score1').mousedown(function (ev) {
         if (ev.which === 3) {
             shift_key_down = true;
         }
         addScore(1);
         shift_key_down = false;
     });
-    jQuery('#sv_score2').mousedown(function (ev) {
+    $('#sv_score2').mousedown(function (ev) {
         if (ev.which === 3) {
             shift_key_down = true;
         }
         addScore(2);
         shift_key_down = false;
     });
-    jQuery('#sv_minus1').mousedown(function (ev) {
+    $('#sv_minus1').mousedown(function (ev) {
         if (ev.which === 3) {
             shift_key_down = true;
         }
         penaltyScore(1);
         shift_key_down = false;
     });
-    jQuery('#sv_minus2').mousedown(function (ev) {
+    $('#sv_minus2').mousedown(function (ev) {
         if (ev.which === 3) {
             shift_key_down = true;
         }
@@ -235,8 +272,26 @@ function init(data) {
         shift_key_down = false;
     });
 
-    jQuery('.overtime_box').click(function (e) {
-        enterOvertimeScores(e);
+    $('.overtime_box').click(function (e) {
+        if (!$(this).hasClass('started') && !svTimer.hasTimerStarted) {
+            $('.current_round').removeClass('current_round');
+            $(this).addClass('current_round');
+            $(this).addClass('started');
+            $(this).find('.label').text('');
+            $(this).find('.time').text('');
+            $(this).removeClass('filled');
+
+            const currentRound = $(this).attr('round');
+            $(`.overtime_box[round="${currentRound}"]`).removeClass('winner').removeClass('loser');
+            $('.winner-label').hide();
+
+            svTimer.startTimer();
+        } else {
+            if ($(this).hasClass('started')) {
+                $(this).removeClass('started');
+                enterOvertimeScores(e);
+            }
+        }
     });
 
     function keydown(e) {
@@ -323,8 +378,8 @@ function setNextEvent(data) {
     if (data != null) {
         try {
             var regs = data.match.split(' vs ');
-            jQuery('#sv_reg1').html(regs[0]);
-            jQuery('#sv_reg2').html(regs[1]);
+            $('#sv_reg1').html(regs[0]);
+            $('#sv_reg2').html(regs[1]);
             setFlags(data.sv_reg1_country, data.sv_reg2_country);
             resetScore();
         } catch (e) {
@@ -344,10 +399,10 @@ function promptDialog(msg, def, callback, html) {
             html +
             '</div>';
     }
-    jQuery('body').append(html);
+    $('body').append(html);
 
     function openDialog() {
-        jQuery("#sv_dialog").dialog({
+        $("#sv_dialog").dialog({
             modal: true,
             buttons: {
                 "OK": function () {
@@ -355,11 +410,11 @@ function promptDialog(msg, def, callback, html) {
                         return $(input).val();
                     });
                     callback(inputVals.length > 1 ? inputVals : inputVals.pop());
-                    jQuery("#sv_dialog").dialog('close');
+                    $("#sv_dialog").dialog('close');
                 },
             },
             close: function () {
-                jQuery('#sv_dialog').remove();
+                $('#sv_dialog').remove();
             }
         });
     }
@@ -374,10 +429,10 @@ function setFlags(sv_reg1_country, sv_reg2_country) {
     sv_reg2_country = COUNTRIES.find(function (c) {
         return c.country_code === sv_reg2_country
     });
-    jQuery('#competitor1_flag_img').attr('src', '../images/flags/' + sv_reg1_country.image);
-    jQuery('#competitor2_flag_img').attr('src', '../images/flags/' + sv_reg2_country.image);
-    jQuery('#competitor1_flag_name').attr('country_code', sv_reg1_country.country_code).html(sv_reg1_country.name + ' (' + sv_reg1_country.country_code_3 + ')');
-    jQuery('#competitor2_flag_name').attr('country_code', sv_reg2_country.country_code).html(sv_reg2_country.name + ' (' + sv_reg2_country.country_code_3 + ')');
+    $('#competitor1_flag_img').attr('src', '../images/flags/' + sv_reg1_country.image);
+    $('#competitor2_flag_img').attr('src', '../images/flags/' + sv_reg2_country.image);
+    $('#competitor1_flag_name').attr('country_code', sv_reg1_country.country_code).html(sv_reg1_country.name + ' (' + sv_reg1_country.country_code_3 + ')');
+    $('#competitor2_flag_name').attr('country_code', sv_reg2_country.country_code).html(sv_reg2_country.name + ' (' + sv_reg2_country.country_code_3 + ')');
 }
 
 function enterRegs() {
@@ -421,36 +476,36 @@ function enterRegs() {
     var d = '<div id="sv_dialog" title="Enter Competitors">' +
         '<table>' +
         '<tr><td style=" color: white;" nowrap>Mat Number</td><td><input type="text" id="sv_assign_mat" size="20" value="' + mat + '"></td></tr>' +
-        '<tr><td style=" color: white;" nowrap>Competitor 1</td><td><input type="text" id="sv_comp1" size="20" value="' + jQuery('#sv_reg1').html() + '"></td></tr>' +
-        '<tr><td style=" color: white;" nowrap>Competitor 1 Country</td><td><select id="sv_comp1_country" value="US">' + getCountries(jQuery('#competitor1_flag_name').attr('country_code')) + '</select></td></tr>' +
-        '<tr><td style=" color: white;" nowrap>Competitor 2</td><td><input type="text" id="sv_comp2" size="20" value="' + jQuery('#sv_reg2').html() + '"></td></tr>' +
-        '<tr><td style=" color: white;" nowrap>Competitor 2 Country</td><td><select id="sv_comp2_country" value="US">' + getCountries(jQuery('#competitor2_flag_name').attr('country_code')) + '</select></td></tr>' +
+        '<tr><td style=" color: white;" nowrap>Competitor 1</td><td><input type="text" id="sv_comp1" size="20" value="' + $('#sv_reg1').html() + '"></td></tr>' +
+        '<tr><td style=" color: white;" nowrap>Competitor 1 Country</td><td><select id="sv_comp1_country" value="US">' + getCountries($('#competitor1_flag_name').attr('country_code')) + '</select></td></tr>' +
+        '<tr><td style=" color: white;" nowrap>Competitor 2</td><td><input type="text" id="sv_comp2" size="20" value="' + $('#sv_reg2').html() + '"></td></tr>' +
+        '<tr><td style=" color: white;" nowrap>Competitor 2 Country</td><td><select id="sv_comp2_country" value="US">' + getCountries($('#competitor2_flag_name').attr('country_code')) + '</select></td></tr>' +
         '<tr><td style=" color: white;" nowrap>Timer</td><td><select id="sv_clock">' + getTimerClock($('#sv_timer').html()) + '</select></td></tr>' +
         '<tr><td style=" color: white;" nowrap>Overtimer</td><td><select id="sv_overtimer">' + getOverTimer('02:00') + '</select></td></tr>' +
         '<tr><td style=" color: white;" nowrap>Semifinals/Finals</td><td><input id="sv_finals" type="checkbox" /></td></tr>' +
         '</table>' +
         '</div>';
-    jQuery('body').append(d);
+    $('body').append(d);
 
-    if(jQuery('#overtime_section').hasClass('is-finals')) {
-        jQuery('#sv_finals').attr('checked', 'checked');
+    if($('#overtime_section').hasClass('is-finals')) {
+        $('#sv_finals').attr('checked', 'checked');
     }
 
     function openDialog() {
-        jQuery('#sv_clock').val(svTimerInit);
-        jQuery('#sv_overtimer').val(millisecondsToTime(svTimer.overtimeLimit));
-        jQuery("#sv_dialog").dialog({
+        $('#sv_clock').val(svTimerInit);
+        $('#sv_overtimer').val(millisecondsToTime(svTimer.overtimeLimit));
+        $("#sv_dialog").dialog({
             modal: true,
             width: 'auto',
             buttons: {
                 "Reset Score": resetScore,
                 "OK": function () {
-                    jQuery('#sv_reg1').html(jQuery('#sv_comp1').val());
-                    jQuery('#sv_reg2').html(jQuery('#sv_comp2').val());
+                    $('#sv_reg1').html($('#sv_comp1').val());
+                    $('#sv_reg2').html($('#sv_comp2').val());
                     setFlags($('select#sv_comp1_country').val(), $('select#sv_comp2_country').val());
 
                     // set time
-                    var timer = jQuery('#sv_clock').val();
+                    var timer = $('#sv_clock').val();
                     if (timer) {
                         svTimer.time = 0;
                         svTimer.addTime(timeToMilliseconds(timer));
@@ -458,27 +513,28 @@ function enterRegs() {
                     }
 
                     // set overtime
-                    var overtimer = jQuery('#sv_overtimer').val();
+                    var overtimer = $('#sv_overtimer').val();
                     if (overtimer) {
                         svTimer.overtimeLimit = timeToMilliseconds(overtimer);
+                        if(svTimer.isOvertime) {
+                            svTimer.startOvertime();
+                        }
                     }
 
-                    var isFinals = jQuery('#sv_finals:checked');
+                    var isFinals = $('#sv_finals:checked');
                     if (isFinals && isFinals.length > 0) {
-                        // jQuery('.finals-label').show();
-                        jQuery('#overtime_section').addClass('is-finals');
+                        $('#overtime_section').addClass('is-finals');
                     } else {
-                        // jQuery('.finals-label').hide();
-                        jQuery('#overtime_section').removeClass('is-finals');
+                        $('#overtime_section').removeClass('is-finals');
                     }
 
 
-                    jQuery.cookie('sv_assign_mat', jQuery('#sv_assign_mat').val());
-                    jQuery("#sv_dialog").dialog('close');
+                    jQuery.cookie('sv_assign_mat', $('#sv_assign_mat').val());
+                    $("#sv_dialog").dialog('close');
                 },
             },
             close: function () {
-                jQuery('#sv_dialog').remove();
+                $('#sv_dialog').remove();
             }
         });
     }
@@ -489,7 +545,6 @@ function enterRegs() {
 var overtimeScores = initOvertimeScores();
 
 function enterOvertimeScores(e) {
-    var time = millisecondsToTimeWithMs(svTimer.time);
     svTimer.pauseTimer();
     const overtime_box = e.currentTarget;
     var dialog = `<div id="sv_overtime_dialog">
@@ -497,72 +552,67 @@ function enterOvertimeScores(e) {
         <button class="sv_overtime_button" id="SCP">SCP</button>
         <button class="sv_overtime_button" id="TAP">TAP</button>
     </div>`;
-    jQuery('body').append(dialog);
+    $('body').append(dialog);
 
-    jQuery('.sv_overtime_button').click(function() {
-        const currentOvertimeBox = jQuery(overtime_box);
+    $('.sv_overtime_button').click(function() {
+        const currentOvertimeBox = $(overtime_box);
+        const currentRound = currentOvertimeBox.attr('round');
+        const currentPlayer = currentOvertimeBox.attr('player');
 
-        var activeButton = jQuery(this);
+        var activeButton = $(this);
         currentOvertimeBox.children('.label').text(activeButton.text());
+        overtimeScores[`round${currentRound}`][currentPlayer].type = activeButton.text();
 
         var isFilled = currentOvertimeBox.hasClass('filled');
         if (!isFilled) {
-            currentOvertimeBox.children('.time').text(time);
+            if (svTimer.isUnlimitedTime) {
+                currentOvertimeBox.children('.time').text(millisecondsToTimeWithMs(svTimer.time));
+                overtimeScores[`round${currentRound}`][currentPlayer].time = svTimer.time;
+            } else {
+                currentOvertimeBox.children('.time').text(millisecondsToTimeWithMs(svTimer.overtimeLimit - svTimer.time));
+                overtimeScores[`round${currentRound}`][currentPlayer].time = svTimer.overtimeLimit - svTimer.time;
+            }
             currentOvertimeBox.addClass('filled');
         }
 
-        var currentPlayer = currentOvertimeBox.attr('player');
-        var currentRound = currentOvertimeBox.attr('round');
-        overtimeScores[`round${currentRound}`][currentPlayer] = {
-            type: activeButton.text(),
-            time: svTimer.time,
-        };
+        svTimer.moveToNextPlayer();
 
-        // set overtime score object
-        var player1 = jQuery(`.overtime_box[player="player1"][round="${currentRound}"]`);
-        var player2 = jQuery(`.overtime_box[player="player2"][round="${currentRound}"]`);
-
-        var isUnlimitedTime = player1.hasClass('unlimited_time');
-
-        if (isUnlimitedTime || (player1.hasClass('filled') && player2.hasClass('filled'))) {
-            setRoundWinner(currentRound, player1, player2, isUnlimitedTime);
-            getOverallWinner();
-
-            //show next round if finals and winner not declared
-            if (jQuery('#overtime_section').hasClass('is-finals') && jQuery('.winner-label:visible').length === 0) {
-                currentOvertimeBox.removeClass('current_round');
-                jQuery(`.overtime_box[round="${parseInt(currentRound) + 1}"]`).addClass('current_round').show();
+        const isFinals = $('#overtime_section').hasClass('is-finals');
+        // if both players of the current round are filled, eval score
+        if ($(`.overtime_box[round="${currentRound}"].filled`).length === 2) {
+            const player1 = $(`.overtime_box[round="${currentRound}"][player="player1"]`);
+            const player2 = $(`.overtime_box[round="${currentRound}"][player="player2"]`);
+            setRoundWinner(currentRound, player1, player2, false);
+            if (isFinals) {
+                player1.next().addClass('current_round');
             }
         }
 
-        // reset timer
-        svTimer.resetTimer(true);
-
-        jQuery("#sv_overtime_dialog").dialog('close');
+        $("#sv_overtime_dialog").dialog('close');
     });
 
     function getOverallWinner() {
-        jQuery('.player1-winner').hide();
-        jQuery('.player2-winner').hide();
-        var isFinals = jQuery('#overtime_section').hasClass('is-finals');
+        $('.player1-winner').hide();
+        $('.player2-winner').hide();
+        var isFinals = $('#overtime_section').hasClass('is-finals');
         var round1Winner = overtimeScores.round1.winner;
         var round2Winner = overtimeScores.round2.winner;
         var round3Winner = overtimeScores.round3.winner;
         if (!isFinals) {
             if (round1Winner === 'player1') {
-                jQuery('.player1-winner').show();
+                $('.player1-winner').show();
             } else if (round1Winner === 'player2') {
-                jQuery('.player2-winner').show();
+                $('.player2-winner').show();
             }
         } else {
             if (round1Winner === 'player1' && round2Winner === 'player1') {
-                jQuery('.player1-winner').show();
+                $('.player1-winner').show();
             } else if (round1Winner === 'player2' && round2Winner === 'player2') {
-                jQuery('.player2-winner').show();
+                $('.player2-winner').show();
             } else if (round3Winner === 'player1') {
-                jQuery('.player1-winner').show();
+                $('.player1-winner').show();
             } else if (round3Winner === 'player2') {
-                jQuery('.player2-winner').show();
+                $('.player2-winner').show();
             }
         }
     }
@@ -571,15 +621,16 @@ function enterOvertimeScores(e) {
         var currentRoundWinner = getRoundWinner(currentRound, isUnlimitedTime);
         overtimeScores[`round${currentRound}`].winner = currentRoundWinner;
         if(currentRoundWinner === 'player1') {
-            player1.css('outline-color', 'lightgreen');
-            player2.css('outline-color', 'red');
+            player1.addClass('winner');
+            player2.addClass('loser');
         } else if(currentRoundWinner === 'player2') {
-            player2.css('outline-color', 'lightgreen');
-            player1.css('outline-color', 'red');
+            player1.addClass('loser');
+            player2.addClass('winner')
         } else {
-            player2.css('outline-color', 'black');
-            player1.css('outline-color', 'black');
+            player1.removeClass('winner').removeClass('loser');
+            player2.removeClass('winner').removeClass('loser');
         }
+        getOverallWinner();
     }
 
     function getRoundWinner(round, isUnlimitedTime) {
@@ -641,19 +692,19 @@ function enterOvertimeScores(e) {
     }
 
     function openOvertimeScoreDialog() {
-        jQuery("#sv_overtime_dialog").dialog({
+        $("#sv_overtime_dialog").dialog({
             modal: true,
             width: 'auto',
             buttons: {
                 "Reset": function () {
-                    var currentOvertimeBox = jQuery(overtime_box);
+                    var currentOvertimeBox = $(overtime_box);
                     var currentPlayer = currentOvertimeBox.attr('player');
                     var currentRound = currentOvertimeBox.attr('round');
 
                     currentOvertimeBox.children('.label').text('');
                     currentOvertimeBox.children('.time').text('');
-                    jQuery(`.overtime_box[round="${currentRound}"]`).css('outline-color', 'black');
                     currentOvertimeBox.removeClass('filled');
+                    currentOvertimeBox.removeClass('current_round');
 
                     overtimeScores[`round${currentRound}`].winner = '';
                     overtimeScores[`round${currentRound}`][currentPlayer] = {
@@ -661,11 +712,11 @@ function enterOvertimeScores(e) {
                         time: 0,
                     };
 
-                    jQuery('.winner-label').hide();
+                    $('.winner-label').hide();
                 },
             },
             close: function () {
-                jQuery('#sv_overtime_dialog').remove();
+                $('#sv_overtime_dialog').remove();
             }
         });
     }
@@ -713,22 +764,24 @@ function initOvertimeScores() {
 }
 
 function resetScore() {
-    jQuery('#sv_minus1').html('0');
-    jQuery('#sv_minus2').html('0');
+    $('#sv_minus1').html('0');
+    $('#sv_minus2').html('0');
 
     setPenaltyLight('right', '');
     setPenaltyLight('left', '');
 
     svTimer.resetTimer(false);
+    svTimer.resetFlags();
 
-    jQuery('.overtime_box').children('.label').text('');
-    jQuery('.overtime_box').children('.time').text('');
-    jQuery('.overtime_box').css('outline-color', 'black');
-    jQuery('.overtime_box').removeClass('filled');
+    $('.overtime_box').children('.label').text('');
+    $('.overtime_box').children('.time').text('');
+    $('.overtime_box').removeClass('filled');
+    $('.overtime_box').removeClass('winner');
+    $('.overtime_box').removeClass('loser');
+    $('.overtime_box').removeClass('current_round');
     overtimeScores = initOvertimeScores();
 
-    jQuery('#overtime_section .overtime_box_wrapper').css('visibility', 'hidden');
-    jQuery('#overtime_section .overtime_box.finals').hide();
+    $('#overtime_section .overtime_box_wrapper').css('visibility', 'hidden');
 
     $('.winner-label').hide();
 
@@ -737,12 +790,12 @@ function resetScore() {
 }
 
 function setPenaltyLight(side, color) {
-    var ilist = jQuery('img[src^=' + side + '-circles]');
+    var ilist = $('img[src^=' + side + '-circles]');
     for (var i = 0; i < ilist.length; i++) {
-        jQuery(ilist[i]).css('visibility', 'hidden');
+        $(ilist[i]).css('visibility', 'hidden');
     }
     if (color !== '') {
-        jQuery('img[src="' + side + '-circles-' + color + '.png"]').css('visibility', 'visible');
+        $('img[src="' + side + '-circles-' + color + '.png"]').css('visibility', 'visible');
     }
 }
 
@@ -752,22 +805,22 @@ function penaltyScore(index) {
         showNeg = sv_showPenaltyNegativeSign;
     }
     var id = '#sv_minus' + index;
-    var s = parseInt((!showNeg ? '-' : '') + jQuery(id).html()) - (shift_key_down ? -1 : 1);
+    var s = parseInt((!showNeg ? '-' : '') + $(id).html()) - (shift_key_down ? -1 : 1);
     if (s > -4 && s <= 0) {
         if (!showNeg) {
             s = -s;
         }
-        jQuery(id).html(s);
+        $(id).html(s);
     }
 
-    if (jQuery('img[src="left-circles-orange.png"]').length === 0)
+    if ($('img[src="left-circles-orange.png"]').length === 0)
         return;
 
     var side = 'left';
     if (index > 1)
         side = 'right';
 
-    s = Math.abs(parseInt(jQuery(id).html()));
+    s = Math.abs(parseInt($(id).html()));
     if (s <= 0) {
         setPenaltyLight(side, '');
     } else if (s === 1) {
@@ -784,15 +837,15 @@ function penaltyScore(index) {
 function addScore(index) {
     console.log(shift_key_down);
     var id = '#sv_score' + index;
-    var s = parseInt(jQuery(id).html()) + (shift_key_down ? -1 : 1);
+    var s = parseInt($(id).html()) + (shift_key_down ? -1 : 1);
     if (s >= 0 && s < 100)
-        jQuery(id).html(s.pad(2));
+        $(id).html(s.pad(2));
 }
 
 var endBell = new Audio("bell.wav");
 
 function toggleTimer() {
-    if (!svTimer.hasTimerStarted) {
+    if (!svTimer.hasTimerStarted && !svTimer.isOvertime) {
         svTimer.startTimer();
     } else {
         svTimer.pauseTimer();
