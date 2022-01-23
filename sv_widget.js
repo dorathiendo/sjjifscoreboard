@@ -583,7 +583,7 @@ function enterOvertimeScores(e) {
             const player1 = $(`.overtime_box[round="${currentRound}"][player="player1"]`);
             const player2 = $(`.overtime_box[round="${currentRound}"][player="player2"]`);
             setRoundWinner(currentRound, player1, player2, false);
-            if (isFinals) {
+            if (isFinals && $('.winner-label:not(:visible)').length === 2) {
                 player1.next().addClass('current_round');
             }
         }
