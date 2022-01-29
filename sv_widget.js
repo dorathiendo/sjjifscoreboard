@@ -93,6 +93,7 @@ class SVTimer {
                     const currentPlayer = $('.overtime_box.current_round');
                     const round = $(currentPlayer).attr('round');
                     $(currentPlayer).find('.label').text('X');
+                    $(currentPlayer).addClass('filled');
                     var nextPlayer = $(`.overtime_box[round="${round}"]:not(.current_round)`);
 
                     if ($(nextPlayer).find('.label').text() !== 'X') {
@@ -151,6 +152,7 @@ class SVTimer {
         if (this.isUnlimitedTime) {
             if (nextPlayer.find('.label').text() === 'X') {
                 nextPlayer.find('.label').text('');
+                nextPlayer.removeClass('filled');
                 this.resetTimer(false);
             } else {
                 this.isUnlimitedTime = false;
@@ -582,7 +584,7 @@ function enterOvertimeScores(e) {
         if ($(`.overtime_box[round="${currentRound}"].filled`).length === 2) {
             const player1 = $(`.overtime_box[round="${currentRound}"][player="player1"]`);
             const player2 = $(`.overtime_box[round="${currentRound}"][player="player2"]`);
-            setRoundWinner(currentRound, player1, player2, false);
+             setRoundWinner(currentRound, player1, player2);
             if (isFinals && $('.winner-label:not(:visible)').length === 2) {
                 player1.next().addClass('current_round');
             }
@@ -617,8 +619,8 @@ function enterOvertimeScores(e) {
         }
     }
 
-    function setRoundWinner(currentRound, player1, player2, isUnlimitedTime) {
-        var currentRoundWinner = getRoundWinner(currentRound, isUnlimitedTime);
+    function setRoundWinner(currentRound, player1, player2) {
+        var currentRoundWinner = getRoundWinner(currentRound);
         overtimeScores[`round${currentRound}`].winner = currentRoundWinner;
         if(currentRoundWinner === 'player1') {
             player1.addClass('winner');
@@ -633,18 +635,9 @@ function enterOvertimeScores(e) {
         getOverallWinner();
     }
 
-    function getRoundWinner(round, isUnlimitedTime) {
+    function getRoundWinner(round) {
         var player1 = overtimeScores[`round${round}`].player1;
         var player2 = overtimeScores[`round${round}`].player2;
-
-        if (isUnlimitedTime) {
-            if (player1.type === 'SUB' || player1.type === 'SCP') {
-                return 'player1';
-            }
-            if (player2.type === 'SUB' || player2.type === 'SCP'){
-                return 'player2';
-            }
-        }
 
         if (player1.type === 'SUB') {
             if (player2.type === 'SCP' || player2.type === 'TAP') {
@@ -688,6 +681,15 @@ function enterOvertimeScores(e) {
                 return 'player2';
             }
         }
+
+        if (player1.type === '') {
+            return 'player2';
+        }
+
+        if (player2.type === '') {
+            return 'player1';
+        }
+
         return null;
     }
 
