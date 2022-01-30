@@ -431,8 +431,8 @@ function setFlags(sv_reg1_country, sv_reg2_country) {
     sv_reg2_country = COUNTRIES.find(function (c) {
         return c.country_code === sv_reg2_country
     });
-    $('#competitor1_flag_img').attr('src', '../images/flags/' + sv_reg1_country.image);
-    $('#competitor2_flag_img').attr('src', '../images/flags/' + sv_reg2_country.image);
+    $('#competitor1_flag_img').attr('src', 'images/flags/' + sv_reg1_country.image);
+    $('#competitor2_flag_img').attr('src', 'images/flags/' + sv_reg2_country.image);
     $('#competitor1_flag_name').attr('country_code', sv_reg1_country.country_code).html(sv_reg1_country.name + ' (' + sv_reg1_country.country_code_3 + ')');
     $('#competitor2_flag_name').attr('country_code', sv_reg2_country.country_code).html(sv_reg2_country.name + ' (' + sv_reg2_country.country_code_3 + ')');
 }
