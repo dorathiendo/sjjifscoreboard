@@ -1216,9 +1216,9 @@ var COUNTRIES = [
     {image: '_0026_tanzania.png', name: 'TZA Tanzania, United Republic of', country_code: 'TZ', country_code_3: 'TZA'},
     {image: '_0014_uganda.png', name: 'UGA Uganda', country_code: 'UG', country_code_3: 'UGA'},
     {image: '_0013_ukraine.png', name: 'UKR Ukraine', country_code: 'UA', country_code_3: 'UKR'},
-    {image: '_0010_usa.png', name: 'UMI US Minor Outlying Islands', country_code: 'UM', country_code_3: 'UMI'},
+    {image: '0010_usa.png', name: 'UMI US Minor Outlying Islands', country_code: 'UM', country_code_3: 'UMI'},
     {image: '_0009_uruguay.png', name: 'URY Uruguay', country_code: 'UY', country_code_3: 'URY'},
-    {image: '_0010_usa.png', name: 'USA United States', country_code: 'US', country_code_3: 'USA'},
+    {image: '0010_usa.png', name: 'USA United States', country_code: 'US', country_code_3: 'USA'},
     {image: '_0008_uzbekistan.png', name: 'UZB Uzbekistan', country_code: 'UZ', country_code_3: 'UZB'},
     {
         image: '_0054_saint vicent.png',
