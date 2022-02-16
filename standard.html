@@ -35,6 +35,19 @@
 
         #Clockface {
             width: 100%;
+
+        }
+
+        .row {
+            /*display: grid;*/
+            /*grid-template-columns: 1fr 1fr 1fr;*/
+            /*justify-content: center;*/
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+            margin: 20px 0;
+            justify-items: center;
+            align-items: center;
+            gap: 10px;
         }
 
         .floatingRectangle {
@@ -51,30 +64,21 @@
             text-align: center;
         }
 
-        div.flag_image {
-            -webkit-transform: rotate(90deg); /* Safari and Chrome */
-            -moz-transform: rotate(90deg); /* Firefox */
-            -ms-transform: rotate(90deg); /* IE 9 */
-            -o-transform: rotate(90deg); /* Opera */
-            transform: rotate(90deg);
+        .flag_image {
+            width: 15vw;
         }
 
-        .competitor1_font {
-            white-space: nowrap;
-            /*margin-top: 40px;*/
+        .competitor1_font,
+        .competitor2_font {
             text-align: center;
             color: #ffff01;
-            /*font-size: 60px;*/
-            font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', 'Arial Black', sans-serif
+            font-size: 7vw;
+            font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', 'Arial Black', sans-serif;
+            white-space: nowrap;
         }
 
         .competitor2_font {
-            white-space: nowrap;
-            /*margin-top: 40px;*/
-            text-align: center;
             color: #1b1464;
-            /*font-size: 60px;*/
-            font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', 'Arial Black', sans-serif
         }
 
         .competitor1_country_font {
@@ -100,37 +104,57 @@
 
 <body>
 <!-- Save for Web Slices (nabjjf-timer-tablet.psd) -->
-<table id="Clockface">
-    <tr>
-        <td colspan="6">
-            <div>
-                <div id="sv_reg1" class="competitor1_font">COMPETITOR 2</div>
+<div id="Clockface">
+    <div class="row" style="grid-template-columns: 1fr 1fr;">
+        <div id="sv_reg1" class="competitor1_font">COMPETITOR 2</div>
+        <div id="sv_reg2" class="competitor2_font">COMPETITOR 1</div>
+    </div>
+    <div class="row" style="grid-template-columns: 1fr 2fr 1fr;">
+        <img class="flag_image"id="competitor1_flag_img" src="/assets/0010_usa.png"
+             style="border: 3px solid #000000;">
+
+        <div style="width: 100%">
+            <div id="tie_break" class="floatingRectangle">TIE BREAK</div>
+            <div id="sv_timer"
+                 style="font-size: 20vw;text-align: center; color: #fe0000; background: black; font-family: 'LCD2U', monospace">00:00
             </div>
-        </td>
-        <td colspan="6">
-            <div>
-                <div id="sv_reg2" class="competitor2_font">COMPETITOR 1</div>
-            </div>
-        </td>
-    </tr>
+        </div>
+        <img class="flag_image" id="competitor2_flag_img" src="/assets/0010_usa.png"
+             style="border: 3px solid #000000;">
+    </div>
+    </div>
+</div>
+<!--<table id="Clockface">-->
+<!--    <tr>-->
+<!--        <td colspan="6">-->
+<!--            <div>-->
+<!--                <div id="sv_reg1" class="competitor1_font">COMPETITOR 2</div>-->
+<!--            </div>-->
+<!--        </td>-->
+<!--        <td colspan="6">-->
+<!--            <div>-->
+<!--                <div id="sv_reg2" class="competitor2_font">COMPETITOR 1</div>-->
+<!--            </div>-->
+<!--        </td>-->
+<!--    </tr>-->
 <!--    <tr>-->
 <!--        <td colspan="2">-->
 <!--            <div class="flag_image">-->
-<!--                <img id="competitor1_flag_img" src="/assets/0010_usa.png" width="232px"-->
+<!--                <img id="competitor1_flag_img" src="/assets/0010_usa.png"-->
 <!--                     style="border: 3px solid #000000;">-->
 <!--            </div>-->
 <!--        </td>-->
 <!--        <td colspan="8" bgcolor="000000">-->
-<!--            <div style="width: 717px; height: 232px; display: table-cell; vertical-align: middle;">-->
+<!--            <div style="display: table-cell; vertical-align: middle;">-->
 <!--                <div id="tie_break" class="floatingRectangle">TIE BREAK</div>-->
 <!--                <div id="sv_timer"-->
-<!--                     style="text-align: center; color: #fe0000; font-size: 220px; font-family: 'LCD2U', monospace">00:00-->
+<!--                     style="text-align: center; color: #fe0000; font-family: 'LCD2U', monospace">00:00-->
 <!--                </div>-->
 <!--            </div>-->
 <!--        </td>-->
 <!--        <td colspan="2">-->
 <!--            <div class="flag_image">-->
-<!--                <img id="competitor2_flag_img" src="/assets/0010_usa.png" width="232px"-->
+<!--                <img id="competitor2_flag_img" src="/assets/0010_usa.png"-->
 <!--                     style="border: 3px solid #000000;">-->
 <!--            </div>-->
 <!--        </td>-->
@@ -226,7 +250,7 @@
     <!--        <td><img src="spacer.gif" width="127" height="1" alt=""></td>-->
     <!--        <td><img src="spacer.gif" width="15" height="1" alt=""></td>-->
     <!--    </tr>-->
-</table>
+<!--</table>-->
 <!-- End Save for Web Slices -->
 
 </body>
