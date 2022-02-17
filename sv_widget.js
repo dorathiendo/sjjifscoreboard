@@ -10,7 +10,7 @@ $(document).ready(function () {
 
 //	var timerOffset = $('#sv_timer').offset();
 //	$('#floatingRectangle').css({top: timerOffset.top, left: timerOffset.left, position:'absolute'});
-    $('#tie_break').hide();
+    $('#tie_break').css('visibility', 'hidden');
     if (window.location.host.indexOf(':8080') > -1) {
         var sv_assign_mat = jQuery.cookie('sv_assign_mat') || '1';
         var event_number = svCurrentEvent || '';
@@ -144,6 +144,9 @@ class SVTimer {
         var currentPlayer = $('.overtime_box.current_round');
         var currentRound = currentPlayer.attr('round');
         var nextPlayer = $(`.overtime_box[round="${currentRound}"]:not(.current_round)`);
+        if (nextPlayer.hasClass('filled')) {
+            nextPlayer = nextPlayer.next('.overtime_box');
+        }
 
         nextPlayer.addClass('current_round');
         currentPlayer.removeClass('current_round');
@@ -190,11 +193,11 @@ class SVTimer {
         $('#sv_timer').html(millisecondsToTime(milliseconds));
     }
     startOvertime() {
-        $('#tie_break').show();
+        $('#tie_break').css('visibility', 'visible');
         this.isOvertime = true;
         this.setTimer(this.overtimeLimit);
         $('#sv_timer').css('color', 'yellow');
-        $('#overtime_section .overtime_box_wrapper').css('visibility', 'visible');
+        $('#overtime_section ').css('visibility', 'visible');
     }
     setTimer(time) {
         this.time = time;
@@ -783,11 +786,11 @@ function resetScore() {
     $('.overtime_box').removeClass('current_round');
     overtimeScores = initOvertimeScores();
 
-    $('#overtime_section .overtime_box_wrapper').css('visibility', 'hidden');
+    $('#overtime_section').css('visibility', 'hidden');
 
     $('.winner-label').hide();
 
-    $('#tie_break').hide();
+    $('#tie_break').css('visibility', 'hidden');
 
 }
 

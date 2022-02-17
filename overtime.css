@@ -1,0 +1,97 @@
+#overtime_section {
+    max-width: 1400px;
+    margin: 0 auto;
+    visibility: hidden;
+}
+
+.overtime_box_wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.overtime_box {
+    height: 10vw;
+    width: 10vw;
+    background: white;
+    outline: 1vw solid black;
+    text-align: center;
+}
+
+.overtime_box .label {
+    font-family: Impact;
+    font-weight: bold;
+    font-size: 5vw;
+}
+
+.overtime_box .time {
+    font-family: Impact;
+    letter-spacing: 2px;
+    font-size: 2vw;
+}
+
+.overtime_box.finals {
+    display: none;
+}
+
+#overtime_section.is-finals .overtime_box.finals {
+    display: block;
+}
+
+.overtime_box.current_round {
+    outline-color: yellow;
+}
+
+.overtime_box.winner {
+    outline-color: lightgreen;
+}
+
+.overtime_box.loser {
+    outline-color: red;
+}
+
+.sv_overtime_button {
+    margin: 10px 0;
+    height: 50px;
+    width: 100%;
+    border: none;
+    font-weight: bold;
+}
+
+.circles {
+    display: block;
+    width: 60px;
+    height: 60px;
+    margin: 10px 40px;
+    visibility: hidden;
+}
+
+.winner-label {
+    position: fixed;
+    top: 30%;
+    z-index: 1;
+    font-size: 10vw;
+    transform: rotate(-35deg);
+    color: yellow;
+    font-family: sans-serif;
+    font-weight: bold;
+    letter-spacing: .1em;
+    display: none;
+}
+
+.player1-winner {
+    left: 0;
+}
+
+.player2-winner {
+    right: 0;
+}
+
+
+.finals-label {
+    font-family: sans-serif;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    display: none;
+}
