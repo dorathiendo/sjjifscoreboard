@@ -49,13 +49,9 @@
             gap: 10px;
         }
 
-        .floatingRectangle {
-            z-index: 1;
-            position: relative;
-            top: 131px;
-            left: 400px;
+        #tie_break {
             font-family: 'Arial Black', sans-serif;
-            font-size: 30px;
+            font-size: 3vw;
             letter-spacing: 10px;
             background-color: rgba(0, 0, 0, 0);
             color: yellow;
@@ -143,17 +139,20 @@
         <div id="sv_reg1" class="competitor1_font">COMPETITOR 2</div>
         <div id="sv_reg2" class="competitor2_font">COMPETITOR 1</div>
     </div>
+    <div class="row" style="grid-template-columns: 1fr;">
+        <div id="tie_break">TIE BREAK</div>
+    </div>
     <div class="row" style="grid-template-columns: 1fr 2fr 1fr;">
         <img class="flag_image"id="competitor1_flag_img" src="/assets/0010_usa.png"
              style="border: 3px solid #000000;">
-
+        <div style="display:none;" align="center" id="competitor1_flag_name" class="competitor1_country_font">United States (USA)</div>
         <div style="width: 100%">
-            <div id="tie_break" class="floatingRectangle">TIE BREAK</div>
             <div id="sv_timer">00:00
             </div>
         </div>
         <img class="flag_image" id="competitor2_flag_img" src="/assets/0010_usa.png"
              style="border: 3px solid #000000;">
+        <div style="display:none;" align="center" id="competitor2_flag_name" class="competitor2_country_font">United States (USA)</div>
     </div>
     <div class="row" style="grid-template-columns: 1fr 1fr 1fr;">
         <div style="display: flex">

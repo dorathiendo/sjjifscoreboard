@@ -10,7 +10,7 @@ $(document).ready(function() {
 	
 //	var timerOffset = $('#sv_timer').offset();
 //	$('#floatingRectangle').css({top: timerOffset.top, left: timerOffset.left, position:'absolute'});
-	$('#tie_break').hide();
+	$('#tie_break').css('visibility', 'hidden');
 	if (window.location.host.indexOf(':8080') > -1){
 		var sv_assign_mat = jQuery.cookie('sv_assign_mat') || '1';
 		var event_number = svCurrentEvent || '';
@@ -343,7 +343,7 @@ function resetScore(){
 	timerDirection = 0;
 	setPenaltyLight('right', '');
 	setPenaltyLight('left', '');
-	$('#tie_break').hide();
+	$('#tie_break').css('visibility', 'hidden');
 }
 
 function setPenaltyLight(side, color){
@@ -437,9 +437,9 @@ function durationToSeconds(duration){
 
 function addTimer(amount){
 	if (timerDirection===0)
-		$('#tie_break').hide();
+		$('#tie_break').css('visibility', 'hidden');
 	else
-		$('#tie_break').show();
+		$('#tie_break').css('visibility', 'visible');
 	
 	jQuery('#sv_timer').css('color', timerDirection===0?'#fe0000':'yellow');
 	var t = jQuery('#sv_timer').html().split(':');
