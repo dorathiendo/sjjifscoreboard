@@ -36,6 +36,8 @@
 
         #Clockface {
             width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
         }
 
         .row {
@@ -62,7 +64,7 @@
         }
 
         .flag_image {
-            width: 15vw;
+            width: 10vw;
         }
 
         .competitor1_font,
@@ -96,6 +98,41 @@
             font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', 'Arial Black', sans-serif
         }
 
+        #sv_timer {
+            font-size: 15vw;
+            text-align: center;
+            color: #fe0000;
+            background: black;
+            font-family: 'LCD2U', monospace;
+            padding: 10px;
+        }
+
+        #logo {
+            width: 100%;
+        }
+
+        .points {
+            text-align: center;
+            color: #fe0000;
+            font-family: 'LCD2U', monospace;
+            background: black;
+            padding: 10px;
+            font-size: 15vw;
+        }
+
+        .points_dots_wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .points_dots {
+            /*display:none; */
+            visibility: hidden;
+            width: 5vw;
+            height: 5vw;
+            margin: 5px;
+        }
     </style>
 </head>
 
@@ -112,12 +149,30 @@
 
         <div style="width: 100%">
             <div id="tie_break" class="floatingRectangle">TIE BREAK</div>
-            <div id="sv_timer"
-                 style="font-size: 20vw;text-align: center; color: #fe0000; background: black; font-family: 'LCD2U', monospace">00:00
+            <div id="sv_timer">00:00
             </div>
         </div>
         <img class="flag_image" id="competitor2_flag_img" src="/assets/0010_usa.png"
              style="border: 3px solid #000000;">
+    </div>
+    <div class="row" style="grid-template-columns: 1fr 1fr 1fr;">
+        <div style="display: flex">
+            <div class="points_dots_wrapper left">
+                <img src="left-circles-yellow.png" class="points_dots">
+                <img src="left-circles-orange.png" class="points_dots">
+                <img src="left-circles-red.png" class="points_dots">
+            </div>
+            <div id="sv_minus1" class="points">-2</div>
+        </div>
+        <div><img id="logo" src="logo.png" alt="SJJIF Logo"></div>
+        <div style="display: flex">
+            <div id="sv_minus2" class="points">-1</div>
+            <div class="points_dots_wrapper right">
+                <img src="right-circles-yellow.png" class="points_dots">
+                <img src="right-circles-orange.png" class="points_dots">
+                <img src="right-circles-red.png" class="points_dots">
+            </div>
+        </div>
     </div>
     </div>
 </div>

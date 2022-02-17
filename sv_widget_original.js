@@ -347,13 +347,10 @@ function resetScore(){
 }
 
 function setPenaltyLight(side, color){
-	var ilist = jQuery('img[src^=' + side + '-circles]');
-	for (var i=0; i<ilist.length; i++){
-		jQuery(ilist[i]).hide();
-	}
-	if (color !== ''){
-		jQuery('img[src="' + side + '-circles-' + color + '.png"]').show();
-	}
+	var circles = jQuery(`.points_dots_wrapper.${side} .points_dots`);
+	circles.css('visibility', 'hidden');
+	var activeCircle = jQuery(`.points_dots_wrapper.${side} .points_dots[src="${side}-circles-${color}.png"]`);
+	activeCircle.css('visibility', 'visible');
 }
 
 function penaltyScore(index){
