@@ -9,7 +9,7 @@ body {
     background-image: url('clockface-bg-gw.jpg');
     background-repeat: repeat-y;
     background-position: center center;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 #Clockface {
