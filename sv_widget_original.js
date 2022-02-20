@@ -18,7 +18,43 @@ $(document).ready(function() {
 	}else{
 		init(null);
 	}
+
+	fillDiv($('#Clockface'), true);
+
+	$( window ).resize(function() {
+		fillDiv($('#Clockface'), true);
+	});
 });
+
+
+function fillDiv(div, proportional) {
+	var currentWidth = div.outerWidth();
+	var currentHeight = div.outerHeight();
+
+	var availableHeight = window.innerHeight;
+	var availableWidth = window.innerWidth;
+
+	var scaleX = availableWidth / currentWidth;
+	var scaleY = availableHeight / currentHeight;
+
+	if (proportional) {
+		scaleX = Math.min(scaleX, scaleY);
+		scaleY = scaleX;
+	}
+
+	var translationX = Math.round((availableWidth - (currentWidth * scaleX)) / 2);
+	var translationY = Math.round((availableHeight - (currentHeight * scaleY)) / 2);
+
+	div.css({
+		"position": "fixed",
+		"left": "0px",
+		"top": "0px",
+		"-webkit-transform": "translate(" + translationX + "px, "
+			+ translationY + "px) scale3d("
+			+ scaleX + ", " + scaleY + ", 1)",
+		"-webkit-transform-origin": "0 0"
+	});
+}
 
 function jQueryAjax(processFunc, funcParams, urlparameters){
 	var jsonId = new Date().getTime();
@@ -65,7 +101,7 @@ function disableSelection(target){
 var svTimerInit = '00:00';
 var svOvertimer = 24*60*60;
 function init(data) {
-	disableSelection(document.body);
+	// disableSelection(document.body);
 	$(document).bind("contextmenu", function(){return false});
 	
 	if (jQuery.cookie('sv_clock') !== null)
@@ -85,6 +121,7 @@ function init(data) {
 		addTimer(10);
 	});
 	jQuery('#sv_timer').mousedown(function(ev){
+		ev.preventDefault();
 		if(ev.which === 3){
 	  	addTimer(-1);
 		}else{
@@ -405,6 +442,7 @@ function togleTimer(){
 	
 	function startTimer(){
 		svTimer = setInterval(function () {
+			console.log('time');
 			if (!addTimer(timerDirection===0?-1:1)){
 				endBell.play();
 				clearInterval(svTimer);
