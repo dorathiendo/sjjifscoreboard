@@ -1,0 +1,23 @@
+.prepare {
+    background: yellow;
+}
+
+.round {
+    background: green;
+}
+
+.warning {
+    background: orange;
+}
+
+.rest {
+    background: red;
+}
+
+.dialog {
+    display: none;
+}
+
+#save_as_wrapper {
+    display: none;
+}

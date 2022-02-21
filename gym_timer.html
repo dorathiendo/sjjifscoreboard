@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<head>
+    <title>SJJIF Timer Green-White</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="jquery-2.1.1.min.js"></script>
+    <script src="jquery.browser.min.js"></script>
+    <script src="jquery.alerts.js"></script>
+    <script src="jquery-ui.js"></script>
+    <script src="jquery.cookie.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.3.0/build/global/luxon.min.js"></script>
+    <script src="gym_timer.js"></script>
+
+    <link href="jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <link href="jquery.alerts.css" rel="stylesheet" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="font.css">
+    <link rel="stylesheet" href="gym_timer.css">
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1 class="date">Date</h1>
+            <h2 class="time">Time</h2>
+        </div>
+        <div class="logo"></div>
+    </div>
+    <div class="timer-wrapper">
+        <div class="logo">
+            <input type="file">
+            <img src="" alt="">
+        </div>
+        <div>
+            <h1 id="round">Round</h1>
+            <h2 id="timer">00:00</h2>
+        </div>
+    </div>
+    <div class="buttons-wrapper">
+        <button id="start_button">Start</button>
+        <button>Refresh</button>
+        <button id="rounds_button" class="">Rounds</button>
+        <button id="prepare_time_button" class="prepare">Prepare</button>
+        <button id="round_time_button" class="round">Round</button>
+        <button id="warning_time_button" class="warning">Warning</button>
+        <button id="rest_time_button" class="rest">Rest</button>
+        <div class="dialog" id="time_dialog">
+            <label></label>
+            <input type="text" />
+        </div>
+    </div>
+    <button id="program_button">Program</button>
+    <div id="program_dialog" class="dialog">
+        <h3>Saved Programs</h3>
+        <div id="program_list"></div>
+        <div>
+            <label>Rounds</label>
+            <input type="text" id="rounds_input"/>
+        </div>
+        <div>
+            <label>Prepare Time</label>
+            <input type="text" id="prepare_input"/>
+        </div>
+        <div>
+            <label>Round Time</label>
+            <input type="text" id="round_input"/>
+        </div>
+        <div>
+            <label>Warning Time</label>
+            <input type="text" id="warning_input"/>
+        </div>
+        <div>
+            <label>Rest Time</label>
+            <input type="text" id="rest_input"/>
+        </div>
+    </div>
+    <div id="save_as_dialog" class="dialog">
+        <label>Name</label>
+        <input type="text" id="save_as_name_input"/>
+    </div>
+</body>
+</html>
+
