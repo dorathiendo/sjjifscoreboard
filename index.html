@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>SJJIF Timer Green-White</title>
@@ -16,6 +17,13 @@
     <link rel="stylesheet" href="font.css">
 
     <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            padding-top: 20vh;
+        }
         .background {
             position: fixed;
             height: 100%;
@@ -27,7 +35,7 @@
         }
         .homepage {
             overflow-x: hidden;
-            padding: 20vh 0;
+            transform-origin: center top;
         }
         .logo {
             display: block;
@@ -37,17 +45,21 @@
         }
         .wrapper {
             width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .scoreboard-link {
             color: inherit;
             text-decoration: none;
             display: block;
-            margin: 20px auto;
+            margin: 20px;
             text-align: center;
         }
 
         .scoreboard-link button {
+            width: 30vw;
+            text-align: center;
             padding: 20px;
             border: 3px solid black;
             font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', 'Arial Black', sans-serif;
@@ -56,6 +68,16 @@
             color: white;
             cursor: pointer;
         }
+
+        @media screen and (max-width: 500px) {
+            .wrapper {
+                flex-direction: column;
+            }
+            .scoreboard-link button {
+                width: 90vw;
+            }
+        }
+
     </style>
 </head>
 
@@ -68,6 +90,22 @@
             <a href="/submission_only" class="scoreboard-link"><button>SJJIF Submission Only Scoreboard</button></a>
         </div>
     </div>
+
+    <script>
+        function fillDiv(div) {
+            const ratio = $(window).height() / div.height();
+            if (ratio < 1) {
+
+                div.css('transform', `scale(${ratio})`);
+            }
+        }
+
+        fillDiv($('.homepage'));
+
+        $( window ).resize(function() {
+            fillDiv($('.homepage'));
+        });
+    </script>
 </body>
 </html>
 

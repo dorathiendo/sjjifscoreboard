@@ -16,12 +16,13 @@ body {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
+    transform-origin: center top;
 }
 
 .row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    margin: 20px 0;
+    padding: 20px;
     justify-items: center;
     align-items: center;
     gap: 10px;
@@ -48,6 +49,7 @@ body {
     font-size: 4vw;
     font-family: Impact, Haettenschweiler, 'Franklin Gothic Bold', 'Arial Black', sans-serif;
     white-space: nowrap;
+    margin: 0;
 }
 
 .competitor2_font {
