@@ -24,9 +24,7 @@
                 <h1 class="date">Date</h1>
                 <div class="time_wrapper">
                     <h2 class="time">Time</h2>
-                    <button id="program_button">Program</button>
                 </div>
-
             </div>
             <img class="logo" src="./assets/sjjif_logo.png" alt="SJJIF Logo">
         </div>
@@ -35,12 +33,13 @@
                 <input id="team_logo_input" type="file">
                 <img class="team_logo" src="./assets/team_logo_placeholder.png" alt="Team Logo">
             </div>
-            <div>
+            <div class="round_wrapper">
                 <h1 id="round">Round</h1>
                 <h2 id="timer">00:00</h2>
             </div>
         </div>
         <div class="buttons_wrapper">
+            <button id="program_button">Program</button>
             <img id="start_button" src="./assets/start_button.png" alt="Start button">
             <img id="refresh_button" src="./assets/refresh_button.png" alt="Refresh button">
             <button id="rounds_button" class="rounds">Rounds</button>
@@ -49,8 +48,10 @@
             <button id="warning_time_button" class="warning">Warning</button>
             <button id="rest_time_button" class="rest">Rest</button>
             <div class="dialog" id="time_dialog">
-                <label></label>
-                <input type="text" />
+                <div class="input_wrapper">
+                    <label></label>
+                    <input type="text" />
+                </div>
             </div>
         </div>
         <div id="program_dialog" class="dialog">

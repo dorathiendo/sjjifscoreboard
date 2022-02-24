@@ -5,14 +5,11 @@ body, html {
 
 body {
     font-family: sans-serif;
+    overflow: hidden;
 }
 
 .gym_timer {
     transform-origin: center top;
-}
-
-button {
-    cursor: pointer;
 }
 
 .rounds {
@@ -81,23 +78,27 @@ button {
 }
 
 #timer {
-    font-size: 20vw;
+    font-size: 18vw;
     margin: 0;
     text-align: center;
 }
 
 button {
-    padding: 1.5vw;
+    padding: 10px 15px;
     font-size: 1.5vw;
-    border-radius: 15px;
-    margin: 0 1vw;
+    border-radius: 10px;
+    margin: 0 0.2vw;
+    cursor: pointer;
+    border: 2px solid black;
 }
 
 .buttons_wrapper {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     white-space: nowrap;
+    margin-top: 10px;
+    flex-wrap: wrap;
 }
 
 .team_logo {
@@ -113,6 +114,7 @@ button {
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: center;
+    gap: 10px;
 }
 
 #program_list {
@@ -124,16 +126,22 @@ button {
 }
 
 #start_button{
-    width: 150px;
+    width: 11vw;
     margin: 0 1vw;
+    cursor: pointer;
 }
 
 #refresh_button {
     margin: 0 1vw;
-    width: 50px;
+    width: 4vw;
+    cursor: pointer;
 }
 
 .time_wrapper {
     display: flex;
     align-items: center;
+}
+
+.round_wrapper {
+    width: 100%;
 }

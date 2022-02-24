@@ -1,10 +1,19 @@
+const defaultProgram = {
+    name: '[New]',
+    rounds: 2,
+    prepareTime: 5,
+    roundTime: 10,
+    warningTime: 5,
+    restTime: 5,
+};
+let currentProgram = defaultProgram;
 $(document).ready(function() {
     setDate();
 
     const timer = new GymTimer();
     const currentProgramName = localStorage.getItem('currentProgram');
     if (currentProgramName) {
-        const currentProgram = localStorage.getItem(currentProgramName);
+        currentProgram = localStorage.getItem(currentProgramName);
         if (currentProgram) {
             setProgram(timer, JSON.parse(currentProgram));
         }
@@ -29,6 +38,8 @@ function fillDiv(div) {
     const ratio = $(window).height() / div.height();
     if (ratio <= 1) {
         div.css('transform', `scale(${ratio})`);
+    } else {
+        div.css('transform', 'scale(1)');
     }
 }
 
@@ -64,6 +75,11 @@ function setEvents(timer) {
         setButtons(timer);
     }));
     $('#program_button').click(() => setProgramDialog(timer));
+    $('#refresh_button').click(() => {
+        timer.currentRound = 1;
+        $('#round').text(`Round ${timer.currentRound}`);
+        timer.stopTimer();
+    });
     $('.team_logo').click(() => {
         $('#team_logo_input').click();
     });
@@ -86,6 +102,7 @@ function setTimeDialog(label, value, callback) {
     $('#time_dialog label').text(label);
     $('#time_dialog input').val(value);
     $('#time_dialog').dialog({
+        width: '50%',
         buttons: [
             {
                 text: 'Save',
@@ -119,6 +136,7 @@ function setProgramDialog(timer) {
         }
     });
     $('#program_dialog').dialog({
+        width: '50%',
         buttons: [
             {
                 text: 'Save',
@@ -138,6 +156,7 @@ function setProgramDialog(timer) {
                 text: 'Save As',
                 click: () => {
                     $('#save_as_dialog').dialog({
+                        width: '50%',
                         buttons: [
                             {
                                 text: 'Save',
@@ -199,21 +218,14 @@ function setProgram(timer, program) {
 class GymTimer {
     hasTimerStarted = false;
     time = 0;
-    program = {
-        name: '[New]',
-        rounds: 2,
-        prepareTime: 5,
-        roundTime: 10,
-        warningTime: 5,
-        restTime: 5,
-    };
+    program = {};
     timerState = 'prepare';
     currentRound = 1;
     startTimer() {
         if (!this.hasTimerStarted) {
             const that = this;
             that.hasTimerStarted = true;
-            let timer = setInterval(() => {
+            this.timer = setInterval(() => {
                 if (that.timerState === 'prepare' && that.time === that.program.prepareTime) {
                     that.timerState = 'round';
                     that.time = 0;
@@ -224,11 +236,7 @@ class GymTimer {
                     that.timerState = 'rest';
                     that.time = 0;
                 } else if (that.timerState === 'rest' && that.time === that.program.restTime) {
-                    that.timerState = '';
-                    that.time = 0;
-                    clearInterval(timer);
-                    timer = null;
-                    that.hasTimerStarted = false;
+                    that.stopTimer();
                     if (that.currentRound < that.program.rounds) {
                         that.currentRound++;
                     }
@@ -244,6 +252,19 @@ class GymTimer {
         $('#timer').text(secsToTime(this.time));
         $('#timer').addClass(this.timerState);
         $('#round').text(`Round ${this.currentRound}`);
+    }
+    stopTimer() {
+        this.timerState = 'prepare';
+        this.time = 0;
+        this.setTime();
+        clearInterval(this.timer);
+        this.timer = null;
+        this.hasTimerStarted = false;
+        $('#timer').removeAttr('class');
+    }
+    pauseTimer() {
+        clearInterval(this.timer);
+        this.hasTimerStarted = false;
     }
 }
 
