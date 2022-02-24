@@ -1,3 +1,24 @@
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+.gym_timer {
+    transform-origin: center top;
+}
+
+button {
+    cursor: pointer;
+}
+
+.rounds {
+    background: white;
+}
+
 .prepare {
     background: yellow;
 }
@@ -20,4 +41,99 @@
 
 #save_as_wrapper {
     display: none;
+}
+
+.logo {
+    width: 100%;
+    justify-self: flex-end;
+}
+
+.header {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    justify-items: stretch;
+}
+
+.date_wrapper h1 {
+    font-size: 4vw;
+    margin: 0;
+}
+
+.date_wrapper h2 {
+    font-size: 5vw;
+    margin: 0;
+}
+
+.timer_wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    justify-items: center;
+    padding: 10px;
+}
+
+#round {
+    text-align: center;
+    font-size: 5vw;
+    border: 1vw solid black;
+    margin: 0 0 20px 0;
+}
+
+#timer {
+    font-size: 20vw;
+    margin: 0;
+    text-align: center;
+}
+
+button {
+    padding: 1.5vw;
+    font-size: 1.5vw;
+    border-radius: 15px;
+    margin: 0 1vw;
+}
+
+.buttons_wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.team_logo {
+    max-width: 100%;
+    max-height: 40vh;
+}
+
+#team_logo_input {
+    display: none;
+}
+
+.input_wrapper {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+}
+
+#program_list {
+    margin: 20px 0;
+}
+
+.radio_wrapper {
+    margin: 10px 0;
+}
+
+#start_button{
+    width: 150px;
+    margin: 0 1vw;
+}
+
+#refresh_button {
+    margin: 0 1vw;
+    width: 50px;
+}
+
+.time_wrapper {
+    display: flex;
+    align-items: center;
 }

@@ -18,64 +18,61 @@
     <link rel="stylesheet" href="gym_timer.css">
 </head>
 <body>
-    <div class="header">
-        <div>
-            <h1 class="date">Date</h1>
-            <h2 class="time">Time</h2>
+    <div class="gym_timer">
+        <div class="header">
+            <div class="date_wrapper">
+                <h1 class="date">Date</h1>
+                <div class="time_wrapper">
+                    <h2 class="time">Time</h2>
+                    <button id="program_button">Program</button>
+                </div>
+
+            </div>
+            <img class="logo" src="./assets/sjjif_logo.png" alt="SJJIF Logo">
         </div>
-        <div class="logo"></div>
-    </div>
-    <div class="timer-wrapper">
-        <div class="logo">
-            <input type="file">
-            <img src="" alt="">
+        <div class="timer_wrapper">
+            <div>
+                <input id="team_logo_input" type="file">
+                <img class="team_logo" src="./assets/team_logo_placeholder.png" alt="Team Logo">
+            </div>
+            <div>
+                <h1 id="round">Round</h1>
+                <h2 id="timer">00:00</h2>
+            </div>
         </div>
-        <div>
-            <h1 id="round">Round</h1>
-            <h2 id="timer">00:00</h2>
+        <div class="buttons_wrapper">
+            <img id="start_button" src="./assets/start_button.png" alt="Start button">
+            <img id="refresh_button" src="./assets/refresh_button.png" alt="Refresh button">
+            <button id="rounds_button" class="rounds">Rounds</button>
+            <button id="prepare_time_button" class="prepare">Prepare</button>
+            <button id="round_time_button" class="round">Round</button>
+            <button id="warning_time_button" class="warning">Warning</button>
+            <button id="rest_time_button" class="rest">Rest</button>
+            <div class="dialog" id="time_dialog">
+                <label></label>
+                <input type="text" />
+            </div>
         </div>
-    </div>
-    <div class="buttons-wrapper">
-        <button id="start_button">Start</button>
-        <button>Refresh</button>
-        <button id="rounds_button" class="">Rounds</button>
-        <button id="prepare_time_button" class="prepare">Prepare</button>
-        <button id="round_time_button" class="round">Round</button>
-        <button id="warning_time_button" class="warning">Warning</button>
-        <button id="rest_time_button" class="rest">Rest</button>
-        <div class="dialog" id="time_dialog">
-            <label></label>
-            <input type="text" />
+        <div id="program_dialog" class="dialog">
+            <h3>Saved Programs</h3>
+            <div id="program_list"></div>
+            <div class="input_wrapper">
+                <label>Rounds</label>
+                <input type="text" id="rounds_input"/>
+                <label>Prepare Time</label>
+                <input type="text" id="prepare_input"/>
+                <label>Round Time</label>
+                <input type="text" id="round_input"/>
+                <label>Warning Time</label>
+                <input type="text" id="warning_input"/>
+                <label>Rest Time</label>
+                <input type="text" id="rest_input"/>
+            </div>
         </div>
-    </div>
-    <button id="program_button">Program</button>
-    <div id="program_dialog" class="dialog">
-        <h3>Saved Programs</h3>
-        <div id="program_list"></div>
-        <div>
-            <label>Rounds</label>
-            <input type="text" id="rounds_input"/>
+        <div id="save_as_dialog" class="dialog">
+            <label>Name</label>
+            <input type="text" id="save_as_name_input"/>
         </div>
-        <div>
-            <label>Prepare Time</label>
-            <input type="text" id="prepare_input"/>
-        </div>
-        <div>
-            <label>Round Time</label>
-            <input type="text" id="round_input"/>
-        </div>
-        <div>
-            <label>Warning Time</label>
-            <input type="text" id="warning_input"/>
-        </div>
-        <div>
-            <label>Rest Time</label>
-            <input type="text" id="rest_input"/>
-        </div>
-    </div>
-    <div id="save_as_dialog" class="dialog">
-        <label>Name</label>
-        <input type="text" id="save_as_name_input"/>
     </div>
 </body>
 </html>

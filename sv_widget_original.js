@@ -30,6 +30,8 @@ function fillDiv(div) {
 	const ratio = $(window).height() / div.height();
 	if (ratio < 1) {
 		div.css('transform', `scale(${ratio})`);
+	} else {
+		div.css('transform', `scale(1)`);
 	}
 }
 
