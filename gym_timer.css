@@ -14,22 +14,27 @@ body {
 
 .rounds {
     background: white;
+    color: black;
 }
 
 .prepare {
     background: yellow;
+    color: black;
 }
 
 .round {
     background: green;
+    color: black;
 }
 
 .warning {
     background: orange;
+    color: black;
 }
 
 .rest {
     background: red;
+    color: black;
 }
 
 .dialog {
@@ -90,6 +95,7 @@ button {
     margin: 0 0.2vw;
     cursor: pointer;
     border: 2px solid black;
+    color: black;
 }
 
 .buttons_wrapper {
@@ -117,8 +123,13 @@ button {
     gap: 10px;
 }
 
+.input_wrapper select {
+    width: 100%;
+}
+
 #program_list {
     margin: 20px 0;
+    width: 100%;
 }
 
 .radio_wrapper {
@@ -144,4 +155,12 @@ button {
 
 .round_wrapper {
     width: 100%;
+}
+
+#settings_button {
+    width: 50px;
+}
+
+.alarm_settings_wrapper {
+    margin: 0 20px;
 }

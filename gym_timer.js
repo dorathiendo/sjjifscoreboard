@@ -1,3 +1,6 @@
+let Alarm = null;
+const endBell = new Audio("bell.wav");
+const alarmSound = new Audio('Alarm-ringtone.mp3');
 const defaultProgram = {
     name: '[New]',
     rounds: 2,
@@ -15,13 +18,20 @@ $(document).ready(function() {
     if (currentProgramName) {
         currentProgram = localStorage.getItem(currentProgramName);
         if (currentProgram) {
-            setProgram(timer, JSON.parse(currentProgram));
+            currentProgram = JSON.parse(currentProgram);
         }
     }
+    setProgram(timer, currentProgram);
 
     const currentTeamLogo = localStorage.getItem('teamLogo');
     if(currentTeamLogo) {
         $('.team_logo').attr('src', currentTeamLogo);
+    }
+
+    const currentSettings = localStorage.getItem('settings');
+    if (currentSettings) {
+        const settings = JSON.parse(currentSettings);
+        setSettings(settings, timer);
     }
 
     setEvents(timer);
@@ -96,12 +106,77 @@ function setEvents(timer) {
             reader.readAsDataURL(file);
         }
     });
+    $('#settings_button').click(e => setSettingsDialog());
+    $('#background_color').change(e => {
+        $('body').css({
+            background: e.currentTarget.value,
+            color: e.currentTarget.value === 'black' ? 'white' : 'black',
+        });
+    });
+    $('#timer_type').change(e => {
+       timer.timerType = e.currentTarget.value;
+    });
+    $('#alarm_on_off').change(e => {
+        if (e.currentTarget.value === 'on') {
+            setAlarm();
+        }
+    });
+}
+
+function setSettingsDialog() {
+    $('#settings_dialog').dialog({
+        title: 'Settings',
+        width: '50%',
+        buttons: [
+            {
+                text: 'Save',
+                click: () => {
+                    const settingsObject = {
+                        backgroundColor: $('#background_color').val(),
+                        color: $('#background_color').val() === 'black' ? 'white' : 'black',
+                        timerType: $('#timer_type').val(),
+                    };
+                    localStorage.setItem('settings', JSON.stringify(settingsObject));
+                    $('#settings_dialog').dialog('close');
+                }
+            }
+        ]
+    });
+}
+
+function setAlarm() {
+    clearInterval(Alarm);
+    const DateTime = luxon.DateTime;
+    const currentTime = new Date();
+    const alarmHour = $('#alarm_hour').val();
+    const alarmMins = $('#alarm_minute').val();
+    const alarmAmPM = $('#alarm_am_pm').val();
+    const formatStr = `${currentTime.getMonth()+1} ${currentTime.getDate()} ${currentTime.getFullYear()} ${alarmHour}:${alarmMins} ${alarmAmPM}`;
+    const alarmTime = DateTime.fromFormat(formatStr, "M d yyyy t");
+    Alarm = setInterval(() => {
+        if (alarmTime.hasSame(DateTime.now(), 'hour') && alarmTime.hasSame(DateTime.now(), 'minutes')) {
+            console.log(DateTime.now());
+            alarmSound.play();
+            clearInterval(Alarm);
+        }
+    }, 1000)
+}
+
+function setSettings(settings, timer) {
+    $('#background_color').val(settings.backgroundColor);
+    $('body').css({
+        backgroundColor: settings.backgroundColor,
+        color: settings.color,
+    });
+    $('#timer_type').val(settings.timerType);
+    timer.timerType = settings.timerType;
 }
 
 function setTimeDialog(label, value, callback) {
     $('#time_dialog label').text(label);
     $('#time_dialog input').val(value);
     $('#time_dialog').dialog({
+        title: 'Set Time',
         width: '50%',
         buttons: [
             {
@@ -120,28 +195,29 @@ function setProgramDialog(timer) {
     const programs = Object.keys(localStorage);
     const allPrograms = programs.reduce((list, p) => {
         if (p !== "currentProgram") {
-            let input =  `<input type="radio" id="${p}" name="programs" />`;
+            let option = `<option>${p}</option>`;
             if (p === localStorage.getItem('currentProgram')) {
-                input = `<input type="radio" checked id="${p}" name="programs" />`;
+                option = `<option selected>${p}</option>`;
             }
-            list.push(`<div class="radio_wrapper">${input} <label for="${p}">${p}</label></div>`);
+            list.push(option);
         }
         return list;
     }, []);
     $('#program_list').html(allPrograms.join(''));
-    $('#program_list input').change((e) => {
-        const program = localStorage.getItem(e.currentTarget.id);
+    $('#program_list').change((e) => {
+        const program = localStorage.getItem(e.currentTarget.value);
         if (program) {
             setInputData(JSON.parse(program));
         }
     });
     $('#program_dialog').dialog({
+        title: 'Program Settings',
         width: '50%',
         buttons: [
             {
                 text: 'Save',
                 click: () => {
-                    const selectedProgram = $('#program_list input:checked').attr('id');
+                    const selectedProgram = $('#program_list').val();
                     const program = getInputData();
                     timer.program = {
                         name: selectedProgram,
@@ -156,6 +232,7 @@ function setProgramDialog(timer) {
                 text: 'Save As',
                 click: () => {
                     $('#save_as_dialog').dialog({
+                        title: 'Save As',
                         width: '50%',
                         buttons: [
                             {
@@ -216,6 +293,7 @@ function setProgram(timer, program) {
 }
 
 class GymTimer {
+    timerType = 'stopwatch';
     hasTimerStarted = false;
     time = 0;
     program = {};
@@ -223,29 +301,62 @@ class GymTimer {
     currentRound = 1;
     startTimer() {
         if (!this.hasTimerStarted) {
-            const that = this;
-            that.hasTimerStarted = true;
-            this.timer = setInterval(() => {
-                if (that.timerState === 'prepare' && that.time === that.program.prepareTime) {
-                    that.timerState = 'round';
-                    that.time = 0;
-                } else if (that.timerState === 'round' && that.time === that.program.roundTime - that.program.warningTime) {
-                    that.timerState = 'warning';
-                    that.time++;
-                } else if (that.timerState === 'warning' && that.time === that.program.roundTime) {
-                    that.timerState = 'rest';
-                    that.time = 0;
-                } else if (that.timerState === 'rest' && that.time === that.program.restTime) {
-                    that.stopTimer();
-                    if (that.currentRound < that.program.rounds) {
-                        that.currentRound++;
-                    }
-                } else {
-                    that.time++;
-                }
-                that.setTime();
-            }, 1000);
+            this.hasTimerStarted = true;
+            if (this.timerType === 'countdown') {
+                this.countdownTimer();
+            } else if (this.timerType === 'stopwatch') {
+                this.stopwatchTimer();
+            }
         }
+    }
+    countdownTimer() {
+        const that = this;
+        that.time = that.program.prepareTime;
+        this.timer = setInterval(() => {
+            if (that.timerState === 'prepare' && that.time === 0) {
+                that.timerState = 'round';
+                that.time = that.program.roundTime;
+            } else if (that.timerState === 'round' && that.time === that.program.warningTime) {
+                that.timerState = 'warning';
+                that.time--;
+            } else if (that.timerState === 'warning' && that.time === 0) {
+                that.timerState = 'rest';
+                that.time = that.program.restTime;
+            } else if (that.timerState === 'rest' && that.time === 0) {
+                that.stopTimer();
+                endBell.play();
+                if (that.currentRound < that.program.rounds) {
+                    that.currentRound++;
+                }
+            } else {
+                that.time--;
+            }
+            that.setTime();
+        }, 1000);
+    }
+    stopwatchTimer() {
+        const that = this;
+        this.timer = setInterval(() => {
+            if (that.timerState === 'prepare' && that.time === that.program.prepareTime) {
+                that.timerState = 'round';
+                that.time = 0;
+            } else if (that.timerState === 'round' && that.time === that.program.roundTime - that.program.warningTime) {
+                that.timerState = 'warning';
+                that.time++;
+            } else if (that.timerState === 'warning' && that.time === that.program.roundTime) {
+                that.timerState = 'rest';
+                that.time = 0;
+            } else if (that.timerState === 'rest' && that.time === that.program.restTime) {
+                that.stopTimer();
+                endBell.play();
+                if (that.currentRound < that.program.rounds) {
+                    that.currentRound++;
+                }
+            } else {
+                that.time++;
+            }
+            that.setTime();
+        }, 1000);
     }
     setTime() {
         $('#timer').removeClass();

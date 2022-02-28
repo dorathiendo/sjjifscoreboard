@@ -24,6 +24,60 @@
                 <h1 class="date">Date</h1>
                 <div class="time_wrapper">
                     <h2 class="time">Time</h2>
+                    <div class="alarm_settings_wrapper">
+                        <span style="display:block;text-align: center">Alarm Settings</span>
+                        <select name="hour" id="alarm_hour">
+                            <option value="12">12</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                        </select>:
+                        <select name="minute" id="alarm_minute">
+                            <option value="00">00</option>
+                            <option value="05">05</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="25">25</option>
+                            <option value="30">30</option>
+                            <option value="35">35</option>
+                            <option value="40">40</option>
+                            <option value="45">45</option>
+                            <option value="50">50</option>
+                            <option value="55">55</option>
+                        </select>
+                        <select name="am_pm" id="alarm_am_pm">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                        <select name="on_off" id="alarm_on_off">
+                            <option value="on">ON</option>
+                            <option selected value="off">OFF</option>
+                        </select>
+                    </div>
+                    <img id="settings_button" src="assets/settings_button.png"/>
+                    <div class="dialog" id="settings_dialog">
+                        <div class="input_wrapper">
+                            <label>Background color</label>
+                            <select name="background_color" id="background_color">
+                                <option value="white">White</option>
+                                <option value="black">Black</option>
+                            </select>
+                            <label>Timer type</label>
+                            <select name="timer_type" id="timer_type">
+                                <option value="stopwatch">Stop Watch</option>
+                                <option value="countdown">Countdown</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <img class="logo" src="./assets/sjjif_logo.png" alt="SJJIF Logo">
@@ -56,7 +110,7 @@
         </div>
         <div id="program_dialog" class="dialog">
             <h3>Saved Programs</h3>
-            <div id="program_list"></div>
+            <select name="program_list" id="program_list"></select>
             <div class="input_wrapper">
                 <label>Rounds</label>
                 <input type="text" id="rounds_input"/>
