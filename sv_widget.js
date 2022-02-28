@@ -101,7 +101,7 @@ class SVTimer {
         var that = this;
         this.timer = setInterval(function () {
             if (that.isUnlimitedTime) {
-                that.time = that.time + 10;
+                that.time = that.time + 100;
                 that.setTime(that.time);
             } else if (that.isOvertime) {
                 if (that.time === 0) {
@@ -119,20 +119,19 @@ class SVTimer {
                     }
                     that.moveToNextPlayer();
 
-                    // endBell.play();
-
+                    endBell.play();
                 } else {
                     if (that.time === 10000) {
-                        // tenSecBell.play();
+                        tenSecBell.play();
                     } else if (that.time === 30000) {
-                        // thirtySecBell.play();
+                        thirtySecBell.play();
                     }
-                    that.time = that.time - 10;
+                    that.time = that.time - 100;
                     that.setTime(that.time);
                 }
             } else {
                 if (that.time === 0) {
-                    // endBell.play();
+                    endBell.play();
                     that.resetTimer(false);
                     if ($('#sv_minus1').html() === $('#sv_minus2').html()) {
                         that.startOvertime();
@@ -149,11 +148,11 @@ class SVTimer {
                     }
                     that.hasTimerStarted = false;
                 } else {
-                    that.time = that.time - 10;
+                    that.time = that.time - 100;
                     that.setTime(that.time);
                 }
             }
-        }, 10);
+        }, 100);
     }
     moveToNextPlayer() {
         var currentPlayer = $('.overtime_box.current_round');
@@ -850,7 +849,7 @@ function penaltyScore(index) {
     } else {
         setPenaltyLight(side, 'red');
         pauseAll(true);
-        // endBell.play();
+        endBell.play();
     }
 }
 
