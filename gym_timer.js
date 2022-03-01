@@ -1,6 +1,7 @@
 let Alarm = null;
 const endBell = new Audio("bell.wav");
 const alarmSound = new Audio('Alarm-ringtone.mp3');
+const beepSound = new Audio("beep-22.wav");
 const defaultProgram = {
     name: '[New]',
     rounds: 2,
@@ -119,6 +120,8 @@ function setEvents(timer) {
     $('#alarm_on_off').change(e => {
         if (e.currentTarget.value === 'on') {
             setAlarm();
+        } else {
+            clearInterval(Alarm);
         }
     });
 }
@@ -313,11 +316,18 @@ class GymTimer {
         const that = this;
         that.time = that.program.prepareTime;
         this.timer = setInterval(() => {
-            if (that.timerState === 'prepare' && that.time === 0) {
+            that.setTime();
+            if (that.timerState === 'prepare' && that.time > 0) {
+                beepSound.play();
+                that.time--;
+            } else if (that.timerState === 'prepare' && that.time === 0) {
                 that.timerState = 'round';
                 that.time = that.program.roundTime;
-            } else if (that.timerState === 'round' && that.time === that.program.warningTime) {
+            } else if (that.timerState === 'round' && that.time === that.program.warningTime + 1) {
                 that.timerState = 'warning';
+                that.time--;
+            } else if (that.timerState === 'warning' && that.time > 0) {
+                beepSound.play();
                 that.time--;
             } else if (that.timerState === 'warning' && that.time === 0) {
                 that.timerState = 'rest';
@@ -331,17 +341,23 @@ class GymTimer {
             } else {
                 that.time--;
             }
-            that.setTime();
         }, 1000);
     }
     stopwatchTimer() {
         const that = this;
         this.timer = setInterval(() => {
-            if (that.timerState === 'prepare' && that.time === that.program.prepareTime) {
+            if (that.timerState === 'prepare' && that.time < that.program.prepareTime) {
+                beepSound.play();
+                that.time++;
+            } else if (that.timerState === 'prepare' && that.time === that.program.prepareTime) {
                 that.timerState = 'round';
                 that.time = 0;
-            } else if (that.timerState === 'round' && that.time === that.program.roundTime - that.program.warningTime) {
+                beepSound.play();
+            } else if (that.timerState === 'round' && that.time === that.program.roundTime - that.program.warningTime - 1) {
                 that.timerState = 'warning';
+                that.time++;
+            } else if(that.timerState === 'warning' && that.time < that.program.roundTime - 1) {
+                beepSound.play();
                 that.time++;
             } else if (that.timerState === 'warning' && that.time === that.program.roundTime) {
                 that.timerState = 'rest';
