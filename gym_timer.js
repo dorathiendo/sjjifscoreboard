@@ -1,4 +1,5 @@
-let Alarm = null;
+const DateTime = luxon.DateTime;
+let alarmTime = null;
 let Clock = null;
 const endBell = new Audio("bell.wav");
 const alarmSound = new Audio('Alarm-ringtone.mp3');
@@ -58,11 +59,13 @@ function fillDiv(div) {
 function liveClock() {
     Clock = setInterval(() => {
         setDate();
+        if (alarmTime && alarmTime.hasSame(DateTime.now(), 'hour') && alarmTime.hasSame(DateTime.now(), 'minutes')) {
+            alarmSound.play();
+        }
     }, 1000);
 }
 
 function setDate() {
-    const DateTime = luxon.DateTime;
     const date = DateTime.now().toFormat('cccc LLLL d, yyyy');
     const time = DateTime.now().toFormat('t');
     $('.header .date').text(date);
@@ -167,20 +170,12 @@ function setSettingsDialog() {
 }
 
 function setAlarm() {
-    clearInterval(Alarm);
-    const DateTime = luxon.DateTime;
     const currentTime = new Date();
     const alarmHour = $('#alarm_hour').val();
     const alarmMins = $('#alarm_minute').val();
     const alarmAmPM = $('#alarm_am_pm').val();
     const formatStr = `${currentTime.getMonth()+1} ${currentTime.getDate()} ${currentTime.getFullYear()} ${alarmHour}:${alarmMins} ${alarmAmPM}`;
-    const alarmTime = DateTime.fromFormat(formatStr, "M d yyyy t");
-    Alarm = setInterval(() => {
-        if (alarmTime.hasSame(DateTime.now(), 'hour') && alarmTime.hasSame(DateTime.now(), 'minutes')) {
-            alarmSound.play();
-            clearInterval(Alarm);
-        }
-    }, 1000)
+    alarmTime = DateTime.fromFormat(formatStr, "M d yyyy t");
 }
 
 function setSettings(settings, timer) {
