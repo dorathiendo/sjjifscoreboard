@@ -94,7 +94,7 @@ button {
     border-radius: 10px;
     margin: 0 0.2vw;
     cursor: pointer;
-    border: 2px solid black;
+    border: 1px solid #666666;
     color: black;
 }
 
@@ -136,10 +136,14 @@ button {
     margin: 10px 0;
 }
 
-#start_button{
-    width: 11vw;
+#start_button, #pause_button {
     margin: 0 1vw;
     cursor: pointer;
+    background: rgb(237,237,237);
+    background: linear-gradient(180deg, rgba(237,237,237,1) 0%, rgba(182,182,182,1) 47%);
+    border: 1px solid #666666;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 #refresh_button {
@@ -163,4 +167,8 @@ button {
 
 .alarm_settings_wrapper {
     margin: 0 20px;
+}
+
+#pause_button {
+    display: none;
 }
