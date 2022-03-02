@@ -66,13 +66,11 @@ function setEvents(timer) {
     $('#round').text(`Round ${timer.currentRound}`);
     $('#start_button').click(() => {
         timer.startTimer();
-        $('#start_button').hide();
-        $('#pause_button').show();
+        toggleStartPauseButton();
     });
     $('#pause_button').click(() => {
         timer.pauseTimer();
-        $('#start_button').show();
-        $('#pause_button').hide();
+        toggleStartPauseButton();
     });
     $('#rounds_button').click(() => setTimeDialog('Rounds', timer.program.rounds, () => {
         timer.program.rounds = $('#time_dialog input').val();
@@ -133,6 +131,11 @@ function setEvents(timer) {
             clearInterval(Alarm);
         }
     });
+}
+
+function toggleStartPauseButton() {
+    $('#start_button').toggle();
+    $('#pause_button').toggle();
 }
 
 function setSettingsDialog() {
@@ -343,6 +346,8 @@ class GymTimer {
                 if (that.currentRound < that.program.rounds) {
                     that.currentRound++;
                     that.startTimer();
+                } else {
+                    toggleStartPauseButton();
                 }
             } else {
                 that.time--;
@@ -370,6 +375,8 @@ class GymTimer {
                 if (that.currentRound < that.program.rounds) {
                     that.currentRound++;
                     that.startTimer();
+                } else {
+                    toggleStartPauseButton();
                 }
             } else {
                 that.time++;
