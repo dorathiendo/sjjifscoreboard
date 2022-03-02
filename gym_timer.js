@@ -1,4 +1,5 @@
 let Alarm = null;
+let Clock = null;
 const endBell = new Audio("bell.wav");
 const alarmSound = new Audio('Alarm-ringtone.mp3');
 const beepSound = new Audio("beep-22.wav");
@@ -12,7 +13,7 @@ const defaultProgram = {
 };
 let currentProgram = defaultProgram;
 $(document).ready(function() {
-    setDate();
+    liveClock();
 
     const timer = new GymTimer();
     const currentProgramName = localStorage.getItem('currentProgram');
@@ -52,6 +53,12 @@ function fillDiv(div) {
     } else {
         div.css('transform', 'scale(1)');
     }
+}
+
+function liveClock() {
+    Clock = setInterval(() => {
+        setDate();
+    }, 1000);
 }
 
 function setDate() {
@@ -170,7 +177,6 @@ function setAlarm() {
     const alarmTime = DateTime.fromFormat(formatStr, "M d yyyy t");
     Alarm = setInterval(() => {
         if (alarmTime.hasSame(DateTime.now(), 'hour') && alarmTime.hasSame(DateTime.now(), 'minutes')) {
-            console.log(DateTime.now());
             alarmSound.play();
             clearInterval(Alarm);
         }
