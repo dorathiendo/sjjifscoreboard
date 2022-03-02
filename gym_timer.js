@@ -64,7 +64,16 @@ function setDate() {
 
 function setEvents(timer) {
     $('#round').text(`Round ${timer.currentRound}`);
-    $('#start_button').click(() => timer.startTimer());
+    $('#start_button').click(() => {
+        timer.startTimer();
+        $('#start_button').hide();
+        $('#pause_button').show();
+    });
+    $('#pause_button').click(() => {
+        timer.pauseTimer();
+        $('#start_button').show();
+        $('#pause_button').hide();
+    });
     $('#rounds_button').click(() => setTimeDialog('Rounds', timer.program.rounds, () => {
         timer.program.rounds = $('#time_dialog input').val();
         setButtons(timer);
@@ -92,7 +101,7 @@ function setEvents(timer) {
         timer.stopTimer();
     });
     $('.team_logo').click(() => {
-        $('#team_logo_input').click();
+        $('#team_logo_input').trigger('click');
     });
     $('#team_logo_input').change((e) => {
        const file = e.currentTarget.files[0];
@@ -315,28 +324,25 @@ class GymTimer {
     countdownTimer() {
         const that = this;
         that.time = that.program.prepareTime;
+        beepSound.play();
         this.timer = setInterval(() => {
             that.setTime();
-            if (that.timerState === 'prepare' && that.time > 0) {
-                beepSound.play();
-                that.time--;
-            } else if (that.timerState === 'prepare' && that.time === 0) {
+            if (that.timerState === 'prepare' && that.time === 0) {
                 that.timerState = 'round';
                 that.time = that.program.roundTime;
             } else if (that.timerState === 'round' && that.time === that.program.warningTime + 1) {
                 that.timerState = 'warning';
-                that.time--;
-            } else if (that.timerState === 'warning' && that.time > 0) {
                 beepSound.play();
                 that.time--;
             } else if (that.timerState === 'warning' && that.time === 0) {
                 that.timerState = 'rest';
                 that.time = that.program.restTime;
+                endBell.play();
             } else if (that.timerState === 'rest' && that.time === 0) {
                 that.stopTimer();
-                endBell.play();
                 if (that.currentRound < that.program.rounds) {
                     that.currentRound++;
+                    that.startTimer();
                 }
             } else {
                 that.time--;
@@ -345,28 +351,25 @@ class GymTimer {
     }
     stopwatchTimer() {
         const that = this;
+        beepSound.play();
         this.timer = setInterval(() => {
-            if (that.timerState === 'prepare' && that.time < that.program.prepareTime) {
-                beepSound.play();
-                that.time++;
-            } else if (that.timerState === 'prepare' && that.time === that.program.prepareTime) {
+            if (that.timerState === 'prepare' && that.time === that.program.prepareTime) {
                 that.timerState = 'round';
                 that.time = 0;
                 beepSound.play();
             } else if (that.timerState === 'round' && that.time === that.program.roundTime - that.program.warningTime - 1) {
                 that.timerState = 'warning';
-                that.time++;
-            } else if(that.timerState === 'warning' && that.time < that.program.roundTime - 1) {
                 beepSound.play();
                 that.time++;
             } else if (that.timerState === 'warning' && that.time === that.program.roundTime) {
                 that.timerState = 'rest';
                 that.time = 0;
+                endBell.play();
             } else if (that.timerState === 'rest' && that.time === that.program.restTime) {
                 that.stopTimer();
-                endBell.play();
                 if (that.currentRound < that.program.rounds) {
                     that.currentRound++;
+                    that.startTimer();
                 }
             } else {
                 that.time++;
