@@ -46,7 +46,7 @@ body {
 }
 
 .logo {
-    width: 100%;
+    max-width: 40vw;
     justify-self: flex-end;
 }
 
@@ -56,9 +56,9 @@ body {
 
 .header {
     padding: 10px;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    justify-items: stretch;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .date_wrapper h1 {
@@ -72,10 +72,8 @@ body {
 }
 
 .timer_wrapper {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 20px;
-    justify-items: center;
+    display: flex;
+    justify-content: center;
     padding: 10px;
 }
 
@@ -111,9 +109,15 @@ button {
     flex-wrap: wrap;
 }
 
+.team_logo_wrapper {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+}
+
 .team_logo {
     max-width: 100%;
-    max-height: 40vh;
+    max-height: 50vh;
 }
 
 #team_logo_input {
@@ -121,10 +125,12 @@ button {
 }
 
 .input_wrapper {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-    gap: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.input_wrapper > * {
+    width: 50%;
 }
 
 .input_wrapper select {
@@ -162,7 +168,7 @@ button {
 }
 
 .round_wrapper {
-    width: 100%;
+    width: 60%;
 }
 
 #settings_button {
