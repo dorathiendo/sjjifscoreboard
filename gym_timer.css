@@ -50,6 +50,10 @@ body {
     justify-self: flex-end;
 }
 
+.logo.black {
+    display: none;
+}
+
 .header {
     padding: 10px;
     display: grid;
