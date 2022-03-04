@@ -54,12 +54,22 @@ $(document).ready(function() {
 });
 
 function fillDiv(div) {
+    const transformVal = [];
     const ratio = $(window).height() / div.height();
     if (ratio <= 1) {
-        div.css('transform', `scale(${ratio})`);
+        transformVal.push(`scale(${ratio})`);
+        // transformVal.push('translateY(-5vh)');
+
     } else {
-        div.css('transform', 'scale(1)');
+        transformVal.push('scale(1)');
     }
+
+    // if ($(window).height() > $(window).width()) {
+    //     transformVal.push('rotate(90deg)');
+    //     transformVal.push('translateX(25vh)');
+    // }
+
+    div.css('transform', transformVal.join(' '));
 }
 
 function liveClock() {
@@ -77,7 +87,7 @@ function setDate() {
     const time = DateTime.now().toFormat('t');
     $('.header .date').text(date);
     $('.header .time').text(time);
-    fillDiv($('.gym_timer'))
+    // fillDiv($('.gym_timer'))
 }
 
 function setEvents(timer) {

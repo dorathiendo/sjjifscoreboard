@@ -9,7 +9,7 @@ body {
 }
 
 .gym_timer {
-    transform-origin: center top;
+    transform-origin: center;
 }
 
 .rounds {
@@ -61,6 +61,19 @@ body {
     align-items: center;
 }
 
+@media only screen and (max-width: 600px) {
+    .header {
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column-reverse;
+    }
+    .date, .time {
+        text-align: center;
+    }
+}
+
 .date_wrapper h1 {
     font-size: 4vw;
     margin: 0;
@@ -85,16 +98,16 @@ body {
 }
 
 #timer {
-    font-size: 18vw;
+    font-size: 15vw;
     margin: 0;
     text-align: center;
 }
 
 button {
-    padding: 10px 15px;
+    padding: 0.8em;
     font-size: 1.5vw;
     border-radius: 10px;
-    margin: 0 0.2vw;
+    margin: 0 0.5em;
     cursor: pointer;
     border: 1px solid #666666;
     color: black;
@@ -104,15 +117,14 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    white-space: nowrap;
     margin-top: 10px;
-    flex-wrap: wrap;
 }
 
 .team_logo_wrapper {
     width: 30%;
     display: flex;
     justify-content: center;
+    padding: 0 10px;
 }
 
 .team_logo {
@@ -181,4 +193,8 @@ button {
 
 #pause_button {
     display: none;
+}
+
+.setting_wrapper {
+    display: flex;
 }
