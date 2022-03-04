@@ -1,10 +1,16 @@
 const DateTime = luxon.DateTime;
 let alarmTime = null;
 let Clock = null;
-const endBell = new Audio("bell-2s.wav");
-const alarmSound = new Audio('alarm.mp3');
-const bellSound = new Audio("boxing-bell.mp3");
-const beepSound = new Audio('sport-beep.m4a');
+
+// Audio set up
+// const endBell = new Audio("bell-2s.wav");
+// const alarmSound = new Audio('alarm.mp3');
+// const bellSound = new Audio("boxing-bell.mp3");
+// const beepSound = new Audio('sport-beep.m4a');
+const beepSound = new Howl({
+    src: ['sport-beep.m4a']
+});
+
 const defaultProgram = {
     name: '[New]',
     rounds: 1,
@@ -81,7 +87,6 @@ function setEvents(timer) {
     $('#round').text(`Round ${timer.currentRound}`);
     $('#start_button').click(() => {
         timer.toggleTimer();
-        document.getElementById('beep_sound').load();
         toggleStartPauseButton();
     });
     $('#pause_button').click(() => {
@@ -371,14 +376,13 @@ class GymTimer {
             that.setTime();
             if(that.timerState === 'prepare' && that.time === that.program.prepareTime) {
                 $('#timer').addClass(that.timerState);
-                // beepSound.play();
-                document.getElementById('beep_sound').play();
+                beepSound.play();
                 that.time--;
             } else if (that.timerState === 'prepare' && that.time === 0) {
                 that.timerState = 'round';
                 $('#timer').addClass(that.timerState);
                 that.time = that.program.roundTime;
-                bellSound.play();
+                // bellSound.play();
             } else if (that.timerState === 'round' && that.time === that.program.warningTime) {
                 that.timerState = 'warning';
                 $('#timer').addClass(that.timerState);
@@ -388,7 +392,7 @@ class GymTimer {
                 that.timerState = 'rest';
                 $('#timer').addClass(that.timerState);
                 that.time = that.program.restTime;
-                endBell.play();
+                // endBell.play();
             } else if (that.timerState === 'rest' && that.currentRound < that.program.rounds && that.time === that.program.prepareTime) {
                 that.timerState = 'prepare';
                 $('#timer').addClass(that.timerState);
@@ -412,7 +416,7 @@ class GymTimer {
             } else if (that.timerState === 'prepare' && that.time === that.program.prepareTime) {
                 that.timerState = 'round';
                 that.time = 0;
-                bellSound.play();
+                // bellSound.play();
             } else if (that.timerState === 'round' && that.time === that.program.roundTime - that.program.warningTime) {
                 that.timerState = 'warning';
                 $('#timer').addClass(that.timerState);
@@ -421,7 +425,7 @@ class GymTimer {
             } else if (that.timerState === 'warning' && that.time === that.program.roundTime) {
                 that.timerState = 'rest';
                 that.time = 0;
-                endBell.play();
+                // endBell.play();
             } else if (that.timerState === 'rest' && that.currentRound < that.program.rounds && that.time === that.program.restTime - that.program.prepareTime) {
                 that.timerState = 'prepare';
                 that.time = 0;
