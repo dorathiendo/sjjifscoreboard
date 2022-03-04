@@ -15,19 +15,6 @@ const defaultProgram = {
 };
 let currentProgram = defaultProgram;
 $(document).ready(function() {
-    document.body.addEventListener('click', unlockAudioEndBell);
-    document.body.addEventListener('touchstart', unlockAudioEndBell);
-
-    document.body.addEventListener('click', unlockAudioBellSound);
-    document.body.addEventListener('touchstart', unlockAudioBellSound);
-
-    document.body.addEventListener('click', unlockAudioBeepSound);
-    document.body.addEventListener('touchstart', unlockAudioBeepSound);
-
-    document.body.addEventListener('click', unlockAudioAlarmSound);
-    document.body.addEventListener('touchstart', unlockAudioAlarmSound);
-
-
     setDate();
     $('#alarm_on_off').val('off');
     setAlarm();
@@ -63,42 +50,6 @@ $(document).ready(function() {
     });
 });
 
-function unlockAudioEndBell() {
-    endBell.play();
-    endBell.pause();
-    endBell.currentTime = 0;
-
-    document.body.removeEventListener('click', unlockAudioEndBell)
-    document.body.removeEventListener('touchstart', unlockAudioEndBell)
-}
-
-function unlockAudioBellSound() {
-    bellSound.play();
-    bellSound.pause();
-    bellSound.currentTime = 0;
-
-    document.body.removeEventListener('click', unlockAudioBellSound)
-    document.body.removeEventListener('touchstart', unlockAudioBellSound)
-}
-
-function unlockAudioBeepSound() {
-    beepSound.play();
-    beepSound.pause();
-    beepSound.currentTime = 0;
-
-    document.body.removeEventListener('click', unlockAudioBeepSound)
-    document.body.removeEventListener('touchstart', unlockAudioBeepSound)
-}
-
-function unlockAudioAlarmSound() {
-    alarmSound.play();
-    alarmSound.pause();
-    alarmSound.currentTime = 0;
-
-    document.body.removeEventListener('click', unlockAudioAlarmSound)
-    document.body.removeEventListener('touchstart', unlockAudioAlarmSound)
-}
-
 function fillDiv(div) {
     const ratio = $(window).height() / div.height();
     if (ratio <= 1) {
@@ -130,6 +81,7 @@ function setEvents(timer) {
     $('#round').text(`Round ${timer.currentRound}`);
     $('#start_button').click(() => {
         timer.toggleTimer();
+        document.getElementById('beep_sound').load();
         toggleStartPauseButton();
     });
     $('#pause_button').click(() => {
@@ -419,7 +371,8 @@ class GymTimer {
             that.setTime();
             if(that.timerState === 'prepare' && that.time === that.program.prepareTime) {
                 $('#timer').addClass(that.timerState);
-                beepSound.play();
+                // beepSound.play();
+                document.getElementById('beep_sound').play();
                 that.time--;
             } else if (that.timerState === 'prepare' && that.time === 0) {
                 that.timerState = 'round';
