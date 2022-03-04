@@ -15,6 +15,12 @@ const defaultProgram = {
 };
 let currentProgram = defaultProgram;
 $(document).ready(function() {
+    document.body.addEventListener('click', () => unlockAudio(endBell));
+    document.body.addEventListener('touchstart', () => unlockAudio(endBell));
+    document.body.addEventListener('click', () => unlockAudio(alarmSound));
+    document.body.addEventListener('touchstart', () => unlockAudio(alarmSound));
+    document.body.addEventListener('click', () => unlockAudio(bellSound));
+    document.body.addEventListener('touchstart', () => unlockAudio(bellSound));
     document.body.addEventListener('click', () => unlockAudio(beepSound));
     document.body.addEventListener('touchstart', () => unlockAudio(beepSound));
 
