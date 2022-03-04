@@ -18,6 +18,16 @@ $(document).ready(function() {
     document.body.addEventListener('click', unlockAudioEndBell);
     document.body.addEventListener('touchstart', unlockAudioEndBell);
 
+    document.body.addEventListener('click', unlockAudioBellSound);
+    document.body.addEventListener('touchstart', unlockAudioBellSound);
+
+    document.body.addEventListener('click', unlockAudioBeepSound);
+    document.body.addEventListener('touchstart', unlockAudioBeepSound);
+
+    document.body.addEventListener('click', unlockAudioAlarmSound);
+    document.body.addEventListener('touchstart', unlockAudioAlarmSound);
+
+
     setDate();
     $('#alarm_on_off').val('off');
     setAlarm();
@@ -54,14 +64,39 @@ $(document).ready(function() {
 });
 
 function unlockAudioEndBell() {
-    const sound = new Audio('bell-2s.wav');
-
-    sound.play();
-    sound.pause();
-    sound.currentTime = 0;
+    endBell.play();
+    endBell.pause();
+    endBell.currentTime = 0;
 
     document.body.removeEventListener('click', unlockAudioEndBell)
     document.body.removeEventListener('touchstart', unlockAudioEndBell)
+}
+
+function unlockAudioBellSound() {
+    bellSound.play();
+    bellSound.pause();
+    bellSound.currentTime = 0;
+
+    document.body.removeEventListener('click', unlockAudioBellSound)
+    document.body.removeEventListener('touchstart', unlockAudioBellSound)
+}
+
+function unlockAudioBeepSound() {
+    beepSound.play();
+    beepSound.pause();
+    beepSound.currentTime = 0;
+
+    document.body.removeEventListener('click', unlockAudioBeepSound)
+    document.body.removeEventListener('touchstart', unlockAudioBeepSound)
+}
+
+function unlockAudioAlarmSound() {
+    alarmSound.play();
+    alarmSound.pause();
+    alarmSound.currentTime = 0;
+
+    document.body.removeEventListener('click', unlockAudioAlarmSound)
+    document.body.removeEventListener('touchstart', unlockAudioAlarmSound)
 }
 
 function fillDiv(div) {
