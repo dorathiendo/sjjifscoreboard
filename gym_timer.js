@@ -15,6 +15,7 @@ const defaultProgram = {
 };
 let currentProgram = defaultProgram;
 $(document).ready(function() {
+    setDate();
     $('#alarm_on_off').val('off');
     setAlarm();
     liveClock();
@@ -42,7 +43,6 @@ $(document).ready(function() {
 
     setEvents(timer);
     setButtons(timer);
-
     fillDiv($('.gym_timer'));
 
     $( window ).resize(function() {
@@ -82,6 +82,7 @@ function setDate() {
     const time = DateTime.now().toFormat('t');
     $('.header .date').text(date);
     $('.header .time').text(time);
+    fillDiv($('.gym_timer'))
 }
 
 function setEvents(timer) {
