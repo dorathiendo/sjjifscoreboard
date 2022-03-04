@@ -83,8 +83,8 @@ function disableSelection(target) {
     target.style.cursor = "default"
 }
 
-var tenSecBell = new Audio("10_secs_warning.mp3");
-var thirtySecBell = new Audio("30_secs_warning.mp3");
+var tenSecBell = new Howl({ src: ['10_secs_warning.mp3'] });
+var thirtySecBell = new Howl({ src: ['30_secs_warning.mp3'] });
 
 class SVTimer {
     time = 0;
@@ -861,7 +861,7 @@ function addScore(index) {
         $(id).html(s.pad(2));
 }
 
-var endBell = new Audio("bell.wav");
+var endBell = new Howl({ src: ['bell.wav'] });
 
 function toggleTimer() {
     if (!svTimer.hasTimerStarted && !svTimer.isOvertime) {
