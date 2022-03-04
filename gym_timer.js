@@ -15,6 +15,9 @@ const defaultProgram = {
 };
 let currentProgram = defaultProgram;
 $(document).ready(function() {
+    document.body.addEventListener('click', () => unlockAudio(beepSound));
+    document.body.addEventListener('touchstart', () => unlockAudio(beepSound));
+
     setDate();
     $('#alarm_on_off').val('off');
     setAlarm();
@@ -49,6 +52,17 @@ $(document).ready(function() {
         fillDiv($('.gym_timer'));
     });
 });
+
+function unlockAudio(audio) {
+    const sound = audio;
+
+    sound.play();
+    sound.pause();
+    sound.currentTime = 0;
+
+    document.body.removeEventListener('click', unlockAudio)
+    document.body.removeEventListener('touchstart', unlockAudio)
+}
 
 function fillDiv(div) {
     const ratio = $(window).height() / div.height();
