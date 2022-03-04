@@ -15,14 +15,8 @@ const defaultProgram = {
 };
 let currentProgram = defaultProgram;
 $(document).ready(function() {
-    document.body.addEventListener('click', () => unlockAudio(endBell));
-    document.body.addEventListener('touchstart', () => unlockAudio(endBell));
-    document.body.addEventListener('click', () => unlockAudio(alarmSound));
-    document.body.addEventListener('touchstart', () => unlockAudio(alarmSound));
-    document.body.addEventListener('click', () => unlockAudio(bellSound));
-    document.body.addEventListener('touchstart', () => unlockAudio(bellSound));
-    document.body.addEventListener('click', () => unlockAudio(beepSound));
-    document.body.addEventListener('touchstart', () => unlockAudio(beepSound));
+    document.body.addEventListener('click', unlockAudioEndBell);
+    document.body.addEventListener('touchstart', unlockAudioEndBell);
 
     setDate();
     $('#alarm_on_off').val('off');
@@ -59,15 +53,15 @@ $(document).ready(function() {
     });
 });
 
-function unlockAudio(audio) {
-    const sound = audio;
+function unlockAudioEndBell() {
+    const sound = new Audio('bell-2s.wav');
 
     sound.play();
     sound.pause();
     sound.currentTime = 0;
 
-    document.body.removeEventListener('click', unlockAudio)
-    document.body.removeEventListener('touchstart', unlockAudio)
+    document.body.removeEventListener('click', unlockAudioEndBell)
+    document.body.removeEventListener('touchstart', unlockAudioEndBell)
 }
 
 function fillDiv(div) {
