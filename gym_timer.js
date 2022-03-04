@@ -57,6 +57,14 @@ function fillDiv(div) {
     } else {
         div.css('transform', 'scale(1)');
     }
+
+    screen.orientation.lock("landscape")
+        .then(function() {
+            console.log('Locked');
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
 }
 
 function liveClock() {
