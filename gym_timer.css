@@ -9,7 +9,7 @@ body {
 }
 
 .gym_timer {
-    transform-origin: center;
+    transform-origin: center top;
 }
 
 .rounds {
