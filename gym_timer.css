@@ -197,4 +197,5 @@ button {
 
 .setting_wrapper {
     display: flex;
+    align-self: center;
 }
