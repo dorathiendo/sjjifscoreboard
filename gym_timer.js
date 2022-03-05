@@ -86,13 +86,18 @@ function liveClock() {
 }
 
 function setDate() {
-    const date = new Date();
-    const weekday = getWeekday(date);
-    const month = getMonth(date);
-    const dateStr = `${weekday} ${month} ${date.getDate() + 1}, ${date.getFullYear()}`;
-    const time = formatAMPM(date);
-    $('.header .date').text(dateStr);
-    $('.header .time').text(time);
+    try {
+        const date = new Date();
+        const weekday = getWeekday(date);
+        const month = getMonth(date);
+        const dateStr = `${weekday} ${month} ${date.getDate() + 1}, ${date.getFullYear()}`;
+        const time = formatAMPM(date);
+        $('.header .date').text(dateStr);
+        $('.header .time').text(time);
+    } catch (e) {
+        console.error(e);
+    }
+
 }
 
 function setEvents(timer) {
