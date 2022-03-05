@@ -55,7 +55,7 @@ body {
 }
 
 .header {
-    padding: 10px;
+    padding: 0.5vw;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -75,8 +75,9 @@ body {
 }
 
 .date_wrapper h1 {
-    font-size: 4vw;
+    font-size: 3vw;
     margin: 0;
+    white-space: nowrap;
 }
 
 .date_wrapper h2 {
@@ -185,6 +186,7 @@ button {
 
 #settings_button {
     width: 50px;
+    height: 55px;
 }
 
 .alarm_settings_wrapper {

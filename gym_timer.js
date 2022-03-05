@@ -1,4 +1,3 @@
-const DateTime = luxon.DateTime;
 let alarmTime = null;
 let Clock = null;
 
@@ -75,19 +74,25 @@ function fillDiv(div) {
 function liveClock() {
     Clock = setInterval(() => {
         setDate();
-        if (alarmTime && alarmTime.hasSame(DateTime.now(), 'hour') && alarmTime.hasSame(DateTime.now(), 'minutes')) {
-            alarmSound.play();
-            alarmTime = null;
+        if (alarmTime ) {
+            const date = new Date();
+            if (date.getHours() === alarmTime.getHours() && date.getMinutes() === alarmTime.getMinutes()) {
+                alarmSound.play();
+                alarmTime = null;
+                $('#alarm_on_off').val('off');
+            }
         }
     }, 1000);
 }
 
 function setDate() {
-    const date = DateTime.now().toFormat('cccc LLLL d, yyyy');
-    const time = DateTime.now().toFormat('t');
-    $('.header .date').text(date);
+    const date = new Date();
+    const weekday = getWeekday(date);
+    const month = getMonth(date);
+    const dateStr = `${weekday} ${month} ${date.getDate() + 1}, ${date.getFullYear()}`;
+    const time = formatAMPM(date);
+    $('.header .date').text(dateStr);
     $('.header .time').text(time);
-    // fillDiv($('.gym_timer'))
 }
 
 function setEvents(timer) {
@@ -203,8 +208,8 @@ function setAlarm() {
         const alarmHour = $('#alarm_hour').val();
         const alarmMins = $('#alarm_minute').val();
         const alarmAmPM = $('#alarm_am_pm').val();
-        const formatStr = `${currentTime.getMonth()+1} ${currentTime.getDate()} ${currentTime.getFullYear()} ${alarmHour}:${alarmMins} ${alarmAmPM}`;
-        alarmTime = DateTime.fromFormat(formatStr, "M d yyyy t");
+        const d = convertTimetoObj(parseInt(alarmHour), parseInt(alarmMins), alarmAmPM);
+        alarmTime = d;
     } else {
         alarmTime = null;
     }
@@ -481,4 +486,45 @@ function timeToSecs(str) {
     }
 
     return s;
+}
+
+function getWeekday(dateObj) {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return days[dateObj.getDay()];
+}
+
+function getMonth(dateObj) {
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    return months[dateObj.getMonth()];
+}
+
+function formatAMPM(date) {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+}
+
+function convertTimetoObj(hours, mins, amPm) {
+    // 12:00 AM
+    let h, m;
+    if (amPm === 'AM') {
+        if (hours === 12) {
+            h = 0;
+        } else {
+            h = hours;
+        }
+        m = mins;
+    } else {
+        h = hours + 12;
+        m = mins
+    }
+    const d = new Date();
+    d.setHours(h);
+    d.setMinutes(m);
+    return d;
 }
