@@ -8,6 +8,11 @@ body {
     overflow: hidden;
 }
 
+input {
+    background: white !important;
+    color: black !important;
+}
+
 .gym_timer {
     transform-origin: center top;
 }
@@ -140,6 +145,8 @@ button {
 .input_wrapper {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
 }
 
 .input_wrapper > * {

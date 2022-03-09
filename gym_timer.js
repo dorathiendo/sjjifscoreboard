@@ -26,8 +26,11 @@ $(document).ready(function() {
 
     try {
         const currentProgramName = localStorage.getItem('currentProgram');
-        if (currentProgramName && localStorage.getItem(currentProgramName)) {
-            timer.program = JSON.parse(localStorage.getItem(currentProgramName));
+        if (currentProgramName) {
+            const currentProgram = localStorage.getItem(currentProgramName);
+            if (currentProgram) {
+                timer.program = JSON.parse(currentProgram);
+            }
         } else {
             timer.program = defaultProgram;
         }
@@ -280,9 +283,9 @@ function setProgramDialog(timer) {
     const programs = Object.keys(localStorage);
     const allPrograms = programs.reduce((list, p) => {
         if (p.indexOf("program_") === 0) {
-            let option = `<option>${p.replace('program_', '')}</option>`;
+            let option = `<option value="${p}">${p.replace('program_', '')}</option>`;
             if (p === localStorage.getItem('currentProgram')) {
-                option = `<option selected>${p.replace('program_', '')}</option>`;
+                option = `<option value="${p}" selected>${p.replace('program_', '')}</option>`;
             }
             list.push(option);
         }
@@ -329,12 +332,12 @@ function setProgramDialog(timer) {
                                 text: 'Save',
                                 click: () => {
                                     const name = $('#save_as_name_input').val();
-                                    localStorage.setItem('currentProgram', `program_${name}`);
                                     const program = {
                                         name: `program_${name}`,
                                         ...getInputData(),
                                     };
-                                    localStorage.setItem(`program_${name}`, JSON.stringify(program));
+                                    localStorage.setItem('currentProgram', program.name);
+                                    localStorage.setItem(program.name, JSON.stringify(program));
                                     timer.program = program;
                                     $('#save_as_dialog').dialog('close');
                                     setButtons(timer);
