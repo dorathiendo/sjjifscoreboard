@@ -15,7 +15,7 @@ const defaultProgram = {
     warningTime: 5,
     restTime: 10,
 };
-let currentProgram = defaultProgram;
+
 $(document).ready(function() {
     setDate();
     $('#alarm_on_off').val('off');
@@ -23,30 +23,50 @@ $(document).ready(function() {
     liveClock();
 
     const timer = new GymTimer();
-    const currentProgramName = localStorage.getItem('currentProgram');
-    if (currentProgramName) {
-        currentProgram = localStorage.getItem(currentProgramName);
-        if (currentProgram) {
-            currentProgram = JSON.parse(currentProgram);
+
+    try {
+        const currentProgramName = localStorage.getItem('currentProgram');
+        if (currentProgramName && localStorage.getItem(currentProgramName)) {
+            timer.program = JSON.parse(localStorage.getItem(currentProgramName));
+        } else {
+            timer.program = defaultProgram;
         }
-    }
-    setProgram(timer, currentProgram);
-
-    const currentTeamLogo = localStorage.getItem('teamLogo');
-    if(currentTeamLogo) {
-        $('.team_logo').attr('src', currentTeamLogo);
+    } catch (e) {
+        console.error(e);
     }
 
-    const currentSettings = localStorage.getItem('settings');
-    if (currentSettings) {
-        const settings = JSON.parse(currentSettings);
-        setSettings(settings, timer);
+    try {
+        const currentTeamLogo = localStorage.getItem('teamLogo');
+        if(currentTeamLogo) {
+            $('.team_logo').attr('src', currentTeamLogo);
+        }
+    } catch (e) {
+        console.log(e);
     }
 
-    setEvents(timer);
-    setButtons(timer);
+    try {
+        const currentSettings = localStorage.getItem('settings');
+        if (currentSettings) {
+            const settings = JSON.parse(currentSettings);
+            setSettings(settings, timer);
+        }
+    } catch (e) {
+        console.log(e);
+    }
+
+    try {
+        setEvents(timer);
+    } catch (e) {
+        console.error(e);
+    }
+
+    try {
+        setButtons(timer);
+    } catch (e) {
+        console.error(e);
+    }
+
     fillDiv($('.gym_timer'));
-
     $( window ).resize(function() {
         fillDiv($('.gym_timer'));
     });
@@ -110,12 +130,12 @@ function setEvents(timer) {
         timer.toggleTimer();
         toggleStartPauseButton();
     });
-    $(document).keydown((event) => {
-        if (event.charCode === 0 || event.keyCode === 32) {
-            timer.toggleTimer();
-            toggleStartPauseButton();
-        }
-    });
+    // $(document).keydown((event) => {
+    //     if (event.charCode === 0 || event.keyCode === 32) {
+    //         timer.toggleTimer();
+    //         toggleStartPauseButton();
+    //     }
+    // });
     $('#rounds_button').click(() => setTimeDialog('Rounds', timer.program.rounds, () => {
         timer.program.rounds = $('#time_dialog input').val();
         setButtons(timer);
@@ -354,12 +374,6 @@ function setButtons(timer) {
     $('#warning_time_button').text(`Warning: ${secsToTime(timer.program.warningTime)}`);
     $('#rest_time_button').text(`Rest: ${secsToTime(timer.program.restTime)}`);
     $('#program_button').text(`Program: ${timer.program.name.replace('program_', '')}`)
-}
-
-function setProgram(timer, program) {
-    if (program) {
-        timer.program = program;
-    }
 }
 
 class GymTimer {
