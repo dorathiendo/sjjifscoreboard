@@ -380,12 +380,14 @@ function setButtons(timer) {
 }
 
 class GymTimer {
-    timerType = 'stopwatch';
-    hasTimerStarted = false;
-    time = 0;
-    program = {};
-    timerState = 'prepare';
-    currentRound = 1;
+    constructor() {
+        this.timerType = 'stopwatch';
+        this.hasTimerStarted = false;
+        this.time = 0;
+        this.program = {};
+        this.timerState = 'prepare';
+        this.currentRound = 1;
+    }
     toggleTimer() {
         if (this.hasTimerStarted) {
             this.pauseTimer();
