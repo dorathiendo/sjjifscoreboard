@@ -353,7 +353,7 @@ COUNTRIES.forEach((country) => {
     audio.append(source);
     $('.anthems').append(audio);
 
-    const flagImg = $('<img>').attr('src', `assets/flags/${country.country_code}.png`);
+    const flagImg = $('<img>').attr('src', `assets/flags/${country.country_code.toUpperCase()}.png`);
     flagImg.attr('id', `flag_${country.country_code}`);
     flagImg.load(() => {
         const newWidth = (flagWidth * flagContainerHeight) / flagHeight;
