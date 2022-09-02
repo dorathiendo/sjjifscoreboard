@@ -339,11 +339,20 @@ const SELECTORS = {
 };
 
 let currentAudio = null;
+const flagWidth = 3000;
+const flagHeight = 1707;
+const flagContainerHeight = $('.flag').height();
+const flagContainerWidth = $('.flag').width();
+const isLandscape = flagContainerWidth > flagContainerHeight;
 
 $('.logo-wrapper').click(e => {
     $(e.currentTarget).toggle();
     $('.inputs').toggle();
 });
+
+if(!isLandscape) {
+    $('.flag').addClass('portrait');
+}
 
 const selectCountries = $(SELECTORS.COUNTRIES_SELECT);
 COUNTRIES.forEach((country) => {
@@ -355,27 +364,36 @@ COUNTRIES.forEach((country) => {
 
     const flagImg = $('<img>').attr('src', `assets/${country.country_code.toLowerCase()}.png`);
     flagImg.attr('id', `flag_${country.country_code}`);
-    flagImg.load(() => {
-        const newWidth = (flagWidth * flagContainerHeight) / flagHeight;
-        flagImg.width(newWidth);
+
+    flagImg.click(() => {
+        toggleAudio();
     });
     $('.flag').append(flagImg);
 });
 
-const flagWidth = 3000;
-const flagHeight = 1707;
-const flagContainerHeight = $('.flag').height();
+function toggleAudio() {
+    if (currentAudio.paused) {
+        currentAudio.play();
+    } else {
+        currentAudio.pause();
+    }
+    $('.play').toggleClass('active');
+}
+
+$('.play').click(() => {
+    if (currentAudio) {
+        toggleAudio();
+    }
+})
 
 selectCountries.change(e => {
-    $('.play').addClass('show');
-    $('.flag img.show').removeClass('show');
-
-    if(currentAudio && !currentAudio?.paused) {
+    if (currentAudio) {
         currentAudio.pause();
-        currentAudio.currentTime = 0;
+        currentAudio.duration = 0;
         $('.play').removeClass('active');
-        currentAudio = null;
     }
+
+    $('.flag img.show').removeClass('show');
 
     const el = $(`option[value="${e.currentTarget.value}"]`);
     const countryName = el.text();
@@ -384,25 +402,12 @@ selectCountries.change(e => {
     const flagImg = $(`.flag #flag_${countryCode}`);
     flagImg.addClass('show');
 
-
-    const audio = $(`.anthems #anthem_${countryCode}`);
-    if (audio) {
-        currentAudio = audio[0];
-    }
-
-    const playPauseAnthem = () => {
-        $('.play').toggleClass('active');
-        if(!audio[0].paused) {
-            audio[0].pause();
-        } else {
-            audio[0].play();
-        }
-    };
-
-    flagImg.click(playPauseAnthem);
-    $('.play').click(playPauseAnthem);
-
     $('.logo-wrapper').toggle();
     $('.inputs').toggle();
+
+    $('.play').addClass('show');
+
+    const audio = $(`.anthems #anthem_${countryCode}`).get(0);
+    currentAudio = audio;
 });
 
