@@ -374,6 +374,7 @@ selectCountries.change(e => {
         currentAudio.pause();
         currentAudio.currentTime = 0;
         $('.play').removeClass('active');
+        currentAudio = null;
     }
 
     const el = $(`option[value="${e.currentTarget.value}"]`);
