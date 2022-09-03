@@ -393,7 +393,7 @@ selectCountries.change(e => {
     const countryName = el.text();
     const countryCode = el.attr('code');
 
-    $('.flag').css({ backgroundImage: `url(assets/${countryCode}.png)`})
+    $('.flag').css({ backgroundImage: `url(assets/${countryCode.toLowerCase()}.png)`})
 
     $('.logo-wrapper').toggle();
     $('.inputs').toggle();
