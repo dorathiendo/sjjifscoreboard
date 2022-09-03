@@ -359,7 +359,7 @@ $(window).load(() => {
     });
 });
 
-$('.flag').dblclick(e => {
+$('body').dblclick(e => {
     toggleFullScreen();
 })
 
