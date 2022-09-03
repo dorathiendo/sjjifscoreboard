@@ -338,6 +338,14 @@ const SELECTORS = {
     COUNTRIES_SELECT: '.inputs .input-wrapper select'
 };
 
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+    }
+}
+
 let currentAudio = null;
 
 $('.logo-wrapper').click(e => {
@@ -350,6 +358,10 @@ $(window).load(() => {
         toggleAudio();
     });
 });
+
+$('.flag').dblclick(e => {
+    toggleFullScreen();
+})
 
 const selectCountries = $(SELECTORS.COUNTRIES_SELECT);
 COUNTRIES.forEach((country) => {
