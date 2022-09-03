@@ -3,23 +3,30 @@ html,body {
     margin: 0;
     background: black;
     font-family: sans-serif;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    display: grid;
+    grid-template-rows: 10vh 90vh;
 }
 
 select {
     padding: 10px;
 }
 
-.grid {
-    display: grid;
-    grid-template-rows: 10vh 90vh;
-    height: 100vh;
+main {
+    flex-grow: 1;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
-
 
 .container {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
 }
 
 .logo-wrapper {
@@ -29,19 +36,19 @@ select {
     height: 100%;
 }
 
-@media (max-width:500px) {
-    .grid {
-        grid-template-columns: 1fr;
-        grid-template-rows: 20vh 80vh;
-    }
-    .logo-wrapper {
-        height: 20vh;
-    }
-    .logo-wrapper .logo {
-        height: auto;
-        width: 100%;
-    }
-}
+/*@media (max-width:500px) {*/
+/*    .grid {*/
+/*        grid-template-columns: 1fr;*/
+/*        grid-template-rows: 20vh 80vh;*/
+/*    }*/
+/*    .logo-wrapper {*/
+/*        height: 20vh;*/
+/*    }*/
+/*    .logo-wrapper .logo {*/
+/*        height: auto;*/
+/*        width: 100%;*/
+/*    }*/
+/*}*/
 
 .inputs {
     display: none;
@@ -62,18 +69,19 @@ select {
 
 .flag img {
     height: 100%;
+    /*width: 100%;*/
     margin: 0 auto;
     display: none;
 }
 
-.flag.portrait {
-    height: 30vh;
-}
+/*.flag.portrait {*/
+/*    height: 30vh;*/
+/*}*/
 
-.flag.portrait img {
-    height: 100%;
-    width: 100%;
-}
+/*.flag.portrait img {*/
+/*    !*height: 100%;*!*/
+/*    width: 100%;*/
+/*}*/
 
 .flag img.show {
     display: block;
@@ -109,4 +117,8 @@ select {
 
 .play.active #pause_button {
     display: block;
+}
+
+.anthems {
+    display: none;
 }

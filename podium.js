@@ -339,20 +339,17 @@ const SELECTORS = {
 };
 
 let currentAudio = null;
-const flagWidth = 3000;
-const flagHeight = 1707;
-const flagContainerHeight = $('.flag').height();
-const flagContainerWidth = $('.flag').width();
-const isLandscape = flagContainerWidth > flagContainerHeight;
 
 $('.logo-wrapper').click(e => {
     $(e.currentTarget).toggle();
     $('.inputs').toggle();
 });
 
-if(!isLandscape) {
-    $('.flag').addClass('portrait');
-}
+$(window).load(() => {
+    $('.flag').click(() => {
+        toggleAudio();
+    });
+});
 
 const selectCountries = $(SELECTORS.COUNTRIES_SELECT);
 COUNTRIES.forEach((country) => {
@@ -363,11 +360,8 @@ COUNTRIES.forEach((country) => {
     $('.anthems').append(audio);
 
     const flagImg = $('<img>').attr('src', `assets/${country.country_code.toLowerCase()}.png`);
-    flagImg.attr('id', `flag_${country.country_code}`);
+    flagImg.attr('id', `flag_${country.country_code.toLowerCase()}`);
 
-    flagImg.click(() => {
-        toggleAudio();
-    });
     $('.flag').append(flagImg);
 });
 
@@ -399,8 +393,7 @@ selectCountries.change(e => {
     const countryName = el.text();
     const countryCode = el.attr('code');
 
-    const flagImg = $(`.flag #flag_${countryCode}`);
-    flagImg.addClass('show');
+    $('.flag').css({ backgroundImage: `url(assets/${countryCode}.png)`})
 
     $('.logo-wrapper').toggle();
     $('.inputs').toggle();
