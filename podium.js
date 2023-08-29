@@ -378,10 +378,10 @@ COUNTRIES.forEach((country) => {
 });
 
 function toggleAudio() {
-    if (currentAudio.paused) {
-        currentAudio.play();
+    if (currentAudio?.paused) {
+        currentAudio?.play();
     } else {
-        currentAudio.pause();
+        currentAudio?.pause();
     }
     $('.play').toggleClass('active');
 }
@@ -394,7 +394,7 @@ $('.play').click(() => {
 
 selectCountries.change(e => {
     if (currentAudio) {
-        currentAudio.pause();
+        currentAudio?.pause();
         currentAudio.duration = 0;
         $('.play').removeClass('active');
     }
